@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "PodcastBook",
-    "slug": "PodcastBook",
+    "slug": "podcastbook",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6a520903-9468-411b-b668-ab8a60298a0a"
+      }
+    },
+    "owner": "shmoofy"
   }
 }
