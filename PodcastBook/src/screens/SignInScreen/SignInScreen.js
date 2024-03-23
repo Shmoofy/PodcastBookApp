@@ -4,6 +4,8 @@ import Logo from '../../../assets/images/penguinLogo.jpg';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from "../../components/CustomButton";
 
+import { useNavigation } from "@react-navigation/native";
+
 
 const SignInScreen = () => {
 
@@ -11,17 +13,22 @@ const SignInScreen = () => {
     const [password, setPassword] = useState('');
 
     const {height} = useWindowDimensions();
+    const navigation = useNavigation();
 
     const onSignInPressed = () => {
         console.warn("sign in");
+        //validate user
+        navigation.navigate('HomeScreen');
     }
 
     const onForgotPasswordPressed = () => {
         console.warn("forgot pass");
+        navigation.navigate('ForgotPassword');
     }
 
     const onSignUpPress = () => {
         console.warn('sign up');
+        navigation.navigate('SignUp');
     }
 
     return (
