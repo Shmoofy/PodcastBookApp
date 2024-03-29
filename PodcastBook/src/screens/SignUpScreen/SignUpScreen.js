@@ -3,24 +3,38 @@ import { View, Text, StyleSheet, ScrollView} from "react-native";
 import CustomInput from '../../components/CustomInput';
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import {useForm} from 'react-hook-form';
+import client from "../../components/client";
+import { signup } from "../../components/auth";
+import AppNotifcation from "../AppNotification/AppNotification";
+import { updateNotification } from "../../components/helper";
+import { StackActions } from '@react-navigation/native';
 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 const SignUpScreen = () => {
 
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('');
-
     const navigation = useNavigation();
 
-    
+    const [message, setMessage] = useState({
+        text: '',
+        type:''
+    })
 
-    const onRegisterPressed = () => {
+    const {control, handleSubmit, watch, formState: {errors}} = useForm();
+    const pwd = watch('Password');
+
+    const onRegisterPressed = async(data) => {
         console.warn("sign up");
+        console.log(data);
         //backend validation
-        //confirm email
-        navigation.navigate('ConfirmEmail');
+        const res = await signup(data);
+        if(!res.success) return updateNotification(setMessage, res.error);
+        console.log(res);
+
+        navigation.dispatch(StackActions.replace('ConfirmEmail', {profile: res.user}));
+
+        
     }
 
     const onSignInPress = () => {
@@ -29,37 +43,65 @@ const SignUpScreen = () => {
     }
 
     return (
+        <>
+        {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
         <ScrollView>
             <View style={styles.root}>
 
                 <Text style={styles.title}> Create an Account</Text>    
 
-                <CustomInput 
-                placeholder="Email" 
-                value={email} 
-                setValue={setEmail}
+                <CustomInput
+                name="Email"
+                control={control}
+                placeholder="Email"
+                rules= {{
+                    required: "Email is required",
+                    pattern: {value: EMAIL_REGEX, message: 'Email is invalid'}
+                }}
                 />
-                <CustomInput 
-                placeholder="Username" 
-                value={username} 
-                setValue={setUsername}
+
+                <CustomInput
+                name="Username"
+                control={control}
+                placeholder="Username"
+                rules={{
+                    required: "Username is required",
+                    minLength: {
+                        value: 3,
+                        message: "Username must be at least 3 characters"
+                    }
+                }}
                 />
-                <CustomInput 
-                placeholder="Password" 
-                value={password} 
-                setValue={setPassword}
+
+                <CustomInput
+                name="Password"
+                control={control}
+                placeholder="Password"
+                rules={{
+                    required: "Password is required",
+                    minLength: {
+                        value: 8,
+                        message: "Password must be at least 8 characters"
+                    }
+                }}
                 secureTextEntry
                 />
-                <CustomInput 
+
+                <CustomInput
+                name="Confirm Password"
+                control={control}
                 placeholder="Confirm Password" 
-                value={passwordConfirm} 
-                setValue={setPasswordConfirm}
                 secureTextEntry
+                rules={{
+                    validate: value => value === pwd || "Passwords do not match",
+                    
+                }}
                 />
+
                 <View style={styles.filler}></View>
                 <CustomButton
                 text= "Create Account"
-                onPress={onRegisterPressed}
+                onPress={handleSubmit(onRegisterPressed)}
                 />
             
                 <CustomButton
@@ -69,6 +111,7 @@ const SignUpScreen = () => {
                 />
             </View>
         </ScrollView>
+        </>
     );
 };
 

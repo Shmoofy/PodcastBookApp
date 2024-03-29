@@ -1,24 +1,47 @@
 import React, {useState} from "react";
-import { View, Text, Image, StyleSheet, useWindowDimensions, ScrollView} from "react-native";
-import Logo from '../../../assets/images/penguinLogo.jpg';
+import { View, Text, Image, StyleSheet, useWindowDimensions, ScrollView, TextInput} from "react-native";
+import Logo from '../../../assets/images/penguinPodcastLogo.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from "../../components/CustomButton";
 
 import { useNavigation } from "@react-navigation/native";
 
+import { useForm, Controller} from 'react-hook-form';
+import client from "../../components/client";
+import { signin } from "../../components/auth";
+import AppNotifcation from "../AppNotification/AppNotification";
+import { updateNotification } from "../../components/helper";
+
 
 const SignInScreen = () => {
-
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
 
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
 
-    const onSignInPressed = () => {
+    const [message, setMessage] = useState({
+        text: '',
+        type:''
+    })
+
+    const {control, handleSubmit, formState: {errors}} = useForm();
+
+    const onSignInPressed = async(data) => {
         console.warn("sign in");
+        console.log(data);
         //validate user
-        navigation.navigate('HomeScreen');
+        const res = await signin(data);
+        
+        if(!res.success) {
+            return updateNotification(setMessage, res.error);
+        } 
+        
+        console.log(res);
+        //navigation.dispatch
+           
+        
+        
+        
+        
     }
 
     const onForgotPasswordPressed = () => {
@@ -32,23 +55,36 @@ const SignInScreen = () => {
     }
 
     return (
+        <>
+        {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
+        
         <ScrollView>
             <View style={styles.root}>
                 <Image source={Logo} style={[styles.logo, {height: height * .3}]} resizeMode='contain' />
-                <CustomInput 
+
+                
+                <CustomInput
+                name="Username"
                 placeholder="Username" 
-                value={username} 
-                setValue={setUsername}
+                control={control}
+                rules= {
+                    {required: 'Username is required'}
+                }
                 />
                 <CustomInput 
-                placeholder="Password" 
-                value={password} 
-                setValue={setPassword}
+                name="Password"
+                placeholder="Password"
+                control={control}
                 secureTextEntry
+                rules= {{
+                    required: 'Password is required',
+                    minLength: {value: 8, message: 'Password must be minimum 8 characters'}
+                }}
                 />
+                
                 <CustomButton
                 text= "Sign In"
-                onPress={onSignInPressed}
+                onPress={handleSubmit(onSignInPressed)}
                 />
                 <CustomButton
                 text= "Forgot Password?"
@@ -68,6 +104,7 @@ const SignInScreen = () => {
                 />
             </View>
         </ScrollView>
+        </>
     );
 };
 

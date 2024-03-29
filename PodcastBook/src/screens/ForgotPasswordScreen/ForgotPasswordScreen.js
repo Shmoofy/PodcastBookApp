@@ -3,17 +3,18 @@ import { View, Text, StyleSheet, ScrollView} from "react-native";
 import CustomInput from '../../components/CustomInput';
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useForm } from 'react-hook-form';
 
-
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 const ForgotPasswordScreen = () => {
 
-    const [email, setEmail] = useState('');
+    const { control, handleSubmit} = useForm(); 
 
     const navigation = useNavigation();
 
-    const onSendPressed = () => {
-        console.warn("confirm code");
+    const onSendPressed = (data) => {
+        console.warn(data);
         navigation.navigate('NewPassword');
     }
 
@@ -31,14 +32,18 @@ const ForgotPasswordScreen = () => {
                 
 
                 <CustomInput 
-                placeholder="Enter your email" 
-                value={email} 
-                setValue={setEmail}
+                name="email"
+                placeholder="Enter your email"
+                control={control}
+                rules={{
+                    required: "Email is required",
+                    pattern: {value: EMAIL_REGEX, message: 'Email is invalid'}
+                }}
                 />
                 
                 <CustomButton
                 text= "Send"
-                onPress={onSendPressed}
+                onPress={handleSubmit(onSendPressed)}
                 />
             
                 <CustomButton

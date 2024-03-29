@@ -3,18 +3,38 @@ import { View, Text, StyleSheet, ScrollView} from "react-native";
 import CustomInput from '../../components/CustomInput';
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useForm } from 'react-hook-form';
+import { verify } from "../../components/auth";
+import AppNotifcation from "../AppNotification/AppNotification";
+import { updateNotification } from "../../components/helper";
+import { StackActions } from '@react-navigation/native';
 
 
 
-const ConfirmEmailScreen = () => {
+const ConfirmEmailScreen = ({route}) => {
 
-    const [code, setCode] = useState('');
+    const {profile} = route.params;
 
     const navigation = useNavigation();
 
-    const onConfirmPressed = () => {
-        console.warn("confirm code");
-        navigation.navigate('HomeScreen');
+    const {control, handleSubmit} = useForm();
+
+    const [message, setMessage] = useState({
+        text: '',
+        type:''
+    })
+
+    const [OTP, setOTP ] = useState({1:'', 2:'', 3:'', 4:''});
+
+    const onConfirmPressed = async(data) => {
+        console.warn(data);
+
+        const res = await verify(data, profile.id);
+        if(!res.success) return updateNotification(setMessage, res.error);
+        console.log(res);
+
+        navigation.dispatch(StackActions.replace('HomeScreen', {profile: res.user}));
+
     }
 
     const onSignInPress = () => {
@@ -25,6 +45,8 @@ const ConfirmEmailScreen = () => {
         console.warn('resend code');
     }
 
+    
+
     return (
         <ScrollView>
             <View style={styles.root}>
@@ -33,22 +55,25 @@ const ConfirmEmailScreen = () => {
                 <Text style={styles.title}>Confirm your email</Text>    
                 
 
-                <CustomInput 
+                <CustomInput
+                name="otp"
                 placeholder="Enter your confirmation code" 
-                value={code} 
-                setValue={setCode}
+                control={control}
+                rules = {{
+                    required: "confirmation code is required"
+                }}
                 />
                 
                 <CustomButton
                 text= "Confirm"
-                onPress={onConfirmPressed}
+                onPress={handleSubmit(onConfirmPressed)}
                 />
             
-                <CustomButton
+                {/*<CustomButton
                 text= "Resend Confirmation Email"
                 onPress={onResendPress}
                 type = "SECONDARY"
-                />
+                />*/}
                 <CustomButton
                 text= "Back to Sign In"
                 onPress={onSignInPress}
