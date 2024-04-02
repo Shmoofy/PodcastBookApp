@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import {MaterialIcons} from '@expo/vector-icons';
 
 
 // can possibly use createDrawerNavigator for bar to move to the right
@@ -9,6 +8,7 @@ import {MaterialIcons} from '@expo/vector-icons';
 const CustomHeader = ({text}) => {
     return (
         <View style = {StyleSheet.header}>
+           
             {/*icon for menu*/}
             <View>
                 <Text style={styles.headerText}>{text}</Text>

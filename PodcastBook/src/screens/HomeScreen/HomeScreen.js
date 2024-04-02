@@ -1,16 +1,27 @@
-import React, {useState} from 'react';
-import {View, Text, ScrollView, SafeAreaView, FlatList,StyleSheet} from 'react-native';
+import React, {useState,useEffect} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import {View, Text, ScrollView, SafeAreaView, FlatList,StyleSheet,TouchableOpacity} from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
 const HomeScreen = () => {
 
+    const navigation = useNavigation();
 
+    useEffect(() => {
+        // Call openDrawer function when HomeScreen is reached
+        openDrawer();
+    }, []);
+
+    const openDrawer = () => {
+        navigation.navigate('MenuScreen');
+    };
 
     return (
+        
         <View>
-            <CustomHeader
-            text = 'Explore'
-            />
-            <Text style={{fontSize: 24, alignSelf: 'center'}}>HomeScreen</Text>
+            
+            
+            <Text style={{ marginVertical:40,fontSize: 24, alignSelf: 'center'}}>HomeScreen</Text>
+            
             <ScrollView>
                 <View>
                     
@@ -46,7 +57,7 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         fontSize: 16,
-        alignSelf: 'left',
+        alignContent: 'flex-start',
         padding : 20,
     },
     filler: {
