@@ -2,9 +2,19 @@ import React, {useState,useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {View, Text, ScrollView, SafeAreaView, FlatList,StyleSheet,TouchableOpacity} from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
+const { Client } = require('podcast-api');
+
 const HomeScreen = () => {
 
     const navigation = useNavigation();
+    const [searchQuery, setSearchQuery] = useState('');
+    const [podcasts, setPodcasts] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasSearched, setHasSearched] = useState(false);
+    const [error, setError] = useState('');
+    // const [reviews, setReviews] = useState([]);
+    // const [searchType, setSearchType] = useState('Podcast');
+    // const [searchInput, setSearchInput] = useState('');
 
     useEffect(() => {
         // Call openDrawer function when HomeScreen is reached
@@ -14,6 +24,37 @@ const HomeScreen = () => {
     const openDrawer = () => {
         navigation.navigate('MenuScreen');
     };
+
+    // initial podcast load up, gotten from web-app
+    useEffect(() => {
+        const fetchInitialPodcasts = async () => {
+               const client = Client({ apiKey: '' });
+               try {
+                     client.fetchBestPodcasts({
+                     region: 'us',
+                     sort: 'listen_score',
+                     safe_mode: 0,
+                   
+                   }).then((response) => {
+       
+                     setPodcasts(response.data.podcasts);
+                     console.log(podcasts);
+       
+                   }).catch((error) => {
+       
+                     console.log(error)
+       
+                   });
+       
+               } catch (error) { //Probably redundant, but didn't want to mess anything up
+                   console.error('Error fetching reviews:', error);
+                   setError('Error fetching reviews');
+               }
+           };
+       
+           fetchInitialPodcasts();
+         },);
+
 
     return (
         
