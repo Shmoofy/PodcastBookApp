@@ -13,6 +13,9 @@ const HomeScreen = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [hasSearched, setHasSearched] = useState(false);
     const [error, setError] = useState('');
+
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     // const [reviews, setReviews] = useState([]);
     // const [searchType, setSearchType] = useState('Podcast');
     // const [searchInput, setSearchInput] = useState('');
@@ -63,9 +66,18 @@ const HomeScreen = () => {
             <Text style={{ marginVertical:40,fontSize: 24, alignSelf: 'center'}}>HomeScreen</Text>
             
             <FlatList data={podcasts} renderItem={({item}) => (
-                <PodcastCard>
-                    <Text>{item.title}</Text>
-                </PodcastCard>
+                
+                <TouchableOpacity onPress={() =>
+                    {
+                        
+                        navigation.navigate('PodcastDetails', item)
+                    }
+
+                } >
+                    <PodcastCard>
+                        <Text style ={styles.placeholder}>{item.title}</Text>
+                    </PodcastCard>
+                </TouchableOpacity>
             )}/>
                 
             

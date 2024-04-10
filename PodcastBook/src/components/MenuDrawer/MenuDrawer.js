@@ -7,6 +7,7 @@ import SettingsScreen from '../../screens/SettingsScreen';
 import AboutScreen from '../../screens/AboutScreen';
 import HomeScreen from '../../screens/HomeScreen';
 import { useNavigation } from '@react-navigation/native';
+import PodcastDetails from '../../screens/PodcastDetailsScreen/PodcastDetailsScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -43,6 +44,7 @@ const MenuDrawer = () => {
         <Drawer.Screen name="Home" component={HomeScreen} />
         <Drawer.Screen name="About" component={AboutScreen} />
         <Drawer.Screen name="Settings" component={SettingsScreen} />
+        <Drawer.Screen name="PodcastDetails" component={PodcastDetails} />
     </Drawer.Navigator>
   );
 };
