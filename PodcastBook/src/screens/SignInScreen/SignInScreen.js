@@ -30,7 +30,7 @@ const SignInScreen = () => {
         console.log(data);
 
         //  ----------------------------------TESTING PURPOSES --------------------------------------------
-        //navigation.navigate('HomeScreen');
+        navigation.navigate('HomeScreen');
 
         //validate user
         const res = await signin(data);

@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {View, Text, ScrollView, SafeAreaView, FlatList,StyleSheet,TouchableOpacity} from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
+import PodcastCard from '../../components/PodcastCard'
 const { Client } = require('podcast-api');
 
 const HomeScreen = () => {
@@ -25,67 +26,49 @@ const HomeScreen = () => {
         navigation.navigate('MenuScreen');
     };
 
+    const fetchInitialPodcasts = async () => {
+        const client = Client({ apiKey: '' });
+        try {
+              client.fetchBestPodcasts({
+              region: 'us',
+              sort: 'listen_score',
+              safe_mode: 0,
+            
+            }).then((response) => {
+
+              setPodcasts(response.data.podcasts);
+              console.log(podcasts);
+
+            }).catch((error) => {
+
+              console.log(error)
+
+            });
+
+        } catch (error) { //Probably redundant, but didn't want to mess anything up
+            console.error('Error fetching reviews:', error);
+            setError('Error fetching reviews');
+        }
+    };
     // initial podcast load up, gotten from web-app
     useEffect(() => {
-        const fetchInitialPodcasts = async () => {
-               const client = Client({ apiKey: '' });
-               try {
-                     client.fetchBestPodcasts({
-                     region: 'us',
-                     sort: 'listen_score',
-                     safe_mode: 0,
-                   
-                   }).then((response) => {
-       
-                     setPodcasts(response.data.podcasts);
-                     console.log(podcasts);
-       
-                   }).catch((error) => {
-       
-                     console.log(error)
-       
-                   });
-       
-               } catch (error) { //Probably redundant, but didn't want to mess anything up
-                   console.error('Error fetching reviews:', error);
-                   setError('Error fetching reviews');
-               }
-           };
-       
+        
            fetchInitialPodcasts();
-         },);
+         },[]);
 
 
     return (
         
         <View>
-            
-            
             <Text style={{ marginVertical:40,fontSize: 24, alignSelf: 'center'}}>HomeScreen</Text>
             
-            <ScrollView>
-                <View>
-                    
-                    <Text style={styles.placeholder}>placeholder </Text>
-                    <Text style={styles.placeholder}>placeholder2 </Text>
-                    <Text style={styles.placeholder}>placeholder3 </Text>
-                    <Text style={styles.placeholder}>placeholder4 </Text>
-                    <Text style={styles.placeholder}>placeholder5 </Text>
-                    <Text style={styles.placeholder}>placeholder6 </Text>
-                    <Text style={styles.placeholder}>placeholder7 </Text>
-                    <Text style={styles.placeholder}>placeholder8 </Text>
-                    <Text style={styles.placeholder}>placeholder9 </Text>
-                    <Text style={styles.placeholder}>placeholder10 </Text>
-                    <Text style={styles.placeholder}>placeholder11 </Text>
-                    <Text style={styles.placeholder}>placeholder12 </Text>
-                    <Text style={styles.placeholder}>placeholder13 </Text>
-                    <Text style={styles.placeholder}>placeholder14 </Text>
-                    <Text style={styles.placeholder}>placeholder15 </Text>
-
-
-                </View>
+            <FlatList data={podcasts} renderItem={({item}) => (
+                <PodcastCard>
+                    <Text>{item.title}</Text>
+                </PodcastCard>
+            )}/>
                 
-            </ScrollView>
+            
         </View>
     );
 };
