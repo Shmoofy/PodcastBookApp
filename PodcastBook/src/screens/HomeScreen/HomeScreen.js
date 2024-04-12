@@ -1,12 +1,12 @@
 import React, {useState,useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
-import {View, Text, ScrollView, SafeAreaView, FlatList,StyleSheet,TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView,useWindowDimensions, SafeAreaView, FlatList,StyleSheet,TouchableOpacity} from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
 import PodcastCard from '../../components/PodcastCard'
 const { Client } = require('podcast-api');
 
 const HomeScreen = () => {
-
+    const {height} = useWindowDimensions();
     const navigation = useNavigation();
     const [searchQuery, setSearchQuery] = useState('');
     const [podcasts, setPodcasts] = useState([]);
@@ -53,6 +53,7 @@ const HomeScreen = () => {
             setError('Error fetching reviews');
         }
     };
+
     // initial podcast load up, gotten from web-app
     useEffect(() => {
         
@@ -63,27 +64,24 @@ const HomeScreen = () => {
     return (
         
         <View>
-            <Text style={{ marginVertical:40,fontSize: 24, alignSelf: 'center'}}>HomeScreen</Text>
-            
-            <FlatList data={podcasts} renderItem={({item}) => (
+            <Text style={{ marginVertical:height*.05,fontSize: 24, alignSelf: 'center'}}>Explore Page</Text>
+            <FlatList style={{marginBottom:height*.08}}data={podcasts} renderItem={({item}) => (
                 
                 <TouchableOpacity onPress={() =>
                     {
-                        
                         navigation.navigate('PodcastDetails', item)
                     }
-
                 } >
                     <PodcastCard>
                         <Text style ={styles.placeholder}>{item.title}</Text>
                     </PodcastCard>
                 </TouchableOpacity>
             )}/>
-                
-            
         </View>
     );
 };
+
+
 
 const styles = StyleSheet.create({
     root: {
