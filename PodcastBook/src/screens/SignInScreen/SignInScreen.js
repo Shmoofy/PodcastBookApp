@@ -31,14 +31,16 @@ const SignInScreen = () => {
         //validate user
         const res = await signin(data);
         
-        if(!res.success) {
-            return updateNotification(setMessage, res.error);
-        } 
+        //if(!res.success) {
+           // return updateNotification(setMessage, res.error);
+        //} else {
+            //console.log("user signed in successfully");
+        //}
         
         console.log(res);
         //navigation.dispatch
            
-        
+        navigation.navigate('HomeScreen');
         
         
         

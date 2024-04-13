@@ -33,7 +33,7 @@ const ConfirmEmailScreen = ({route}) => {
         if(!res.success) return updateNotification(setMessage, res.error);
         console.log(res);
 
-        navigation.dispatch(StackActions.replace('HomeScreen', {profile: res.user}));
+       // navigation.dispatch(StackActions.replace('HomeScreen', {profile: res.user}));
 
     }
 
