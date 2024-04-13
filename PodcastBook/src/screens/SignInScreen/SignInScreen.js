@@ -28,6 +28,10 @@ const SignInScreen = () => {
     const onSignInPressed = async(data) => {
         console.warn("sign in");
         console.log(data);
+
+        //  ----------------------------------TESTING PURPOSES --------------------------------------------
+        //navigation.navigate('HomeScreen');
+
         //validate user
         const res = await signin(data);
         
@@ -38,6 +42,7 @@ const SignInScreen = () => {
         //}
         
         console.log(res);
+        
         //navigation.dispatch
            
         navigation.navigate('HomeScreen');
