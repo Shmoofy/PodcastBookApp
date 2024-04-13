@@ -63,7 +63,7 @@ const HomeScreen = () => {
 
     return (
         
-        <View>
+        <View style={styles.root}>
             <Text style={{ marginVertical:height*.05,fontSize: 24, alignSelf: 'center'}}>Explore Page</Text>
             <FlatList style={{marginBottom:height*.2}}data={podcasts} renderItem={({item}) => 
             {
@@ -93,8 +93,8 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
     root: {
-        alignItems: 'center',
-        padding: 40,
+        
+        backgroundColor: '#41a0ff',
 
     },
     podcastLogo:{
