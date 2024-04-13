@@ -13,7 +13,7 @@ import { StackActions } from '@react-navigation/native';
 
 const ConfirmEmailScreen = ({route}) => {
 
-    const {profile} = route.params;
+    const {userId} = route.params;
 
     const navigation = useNavigation();
 
@@ -28,12 +28,18 @@ const ConfirmEmailScreen = ({route}) => {
 
     const onConfirmPressed = async(data) => {
         console.warn(data);
+        console.log({userId});
+        const res = await verify(data, {userId});
+        if(res.error) {
+            updateNotification(setMessage, res.error);
+            console.log(res);
+        } else {
+            navigation.dispatch(StackActions.replace('HomeScreen', {profile: res.userId}));
+        }
+        
+        //console.log(res.userId);
 
-        const res = await verify(data, profile.id);
-        if(!res.success) return updateNotification(setMessage, res.error);
-        console.log(res);
-
-       // navigation.dispatch(StackActions.replace('HomeScreen', {profile: res.user}));
+        
 
     }
 

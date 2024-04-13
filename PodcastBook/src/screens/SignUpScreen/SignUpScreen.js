@@ -29,16 +29,18 @@ const SignUpScreen = () => {
         console.log(data);
         //backend validation
         const res = await signup(data);
-        //if(!res.success) {
-           // return updateNotification(setMessage, res.error);
-        //} else {
-            //console.log("user created successfully");
-        //}
+        if(res.error) {
+            updateNotification(setMessage, res.error);
+        } else {
+            console.log("user created successfully");
+            console.log(res);
+            navigation.dispatch(StackActions.replace('ConfirmEmail', {userId: res.userId}));
+        }
         
-        console.log(res);
+        
 
-        navigation.navigate('SignIn');
-       // navigation.dispatch(StackActions.replace('ConfirmEmail', {profile: res.user}));
+        //navigation.navigate('ConfirmEmail');
+        
 
         
     }
