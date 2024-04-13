@@ -31,7 +31,14 @@ export const signin = async values => {
 export const verify = async (otp, userId) => {
     //const navigation = useNavigation();
     try {
-        const {data} = await client.post('/verifyEmail', {otp, userId});
+        //console.log("in verify auth");
+        //console.log({otp, userId});
+        const  reqData  = {
+            userId : userId.userId,
+            otp : otp.otp
+        }
+        //console.log(reqData);
+        const {data} = await client.post('/verifyEmail', reqData);
         return data;
     } catch (error) {
         return catchError(error);

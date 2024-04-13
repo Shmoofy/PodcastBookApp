@@ -29,23 +29,15 @@ const SignInScreen = () => {
         console.warn("sign in");
         console.log(data);
 
-        //  ----------------------------------TESTING PURPOSES --------------------------------------------
-        navigation.navigate('HomeScreen');
-
-        //validate user
         const res = await signin(data);
         
-        if(!res.success) {
-            return updateNotification(setMessage, res.error);
-        } 
-        
-        console.log(res);
-        
-        //navigation.dispatch
-           
-        
-        
-        
+        if(res.error) {
+            updateNotification(setMessage, res.error);
+        } else {
+            console.log("user signed in successfully");
+            console.log(res);
+            navigation.navigate('HomeScreen', {userId: res.userId});
+        }
         
     }
 
