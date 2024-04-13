@@ -13,7 +13,7 @@ import NewPasswordScreen from '../screens/NewPasswordScreen';
 import HomeScreen from '../screens/HomeScreen';
 import AboutScreen from '../screens/AboutScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-
+import PodcastDetails from '../screens/PodcastDetailsScreen/PodcastDetailsScreen';
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -29,7 +29,7 @@ const Navigation = () => {
                 <Stack.Screen name="Settings" component={SettingsScreen}/>
                 <Stack.Screen name = "MenuScreen" component={MenuDrawer}/>
                 <Stack.Screen name= "HomeScreen" component={HomeScreen} />
-                
+                <Stack.Screen name= "PodcastDetails" component={PodcastDetails}/>
 
             </Stack.Navigator>
         </NavigationContainer>
