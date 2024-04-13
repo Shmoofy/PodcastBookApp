@@ -1,15 +1,18 @@
 import React from "react";
-import { StyleSheet,View,Text } from "react-native";
+import { StyleSheet,View,Text,Image, useWindowDimensions} from "react-native";
+
 
 
 const PodcastDetails = ({route}) =>
 {
-    
-    const {title,description} = route.params;
+    const {height} = useWindowDimensions();
+    const {title,description,image} = route.params;
     console.log("In podcast detail screen");
-    console.log("title=",title)
+    console.log("title=",title);
+    console.log(image);
     return (
         <View style = {DetailStyle.container}>
+            <Image source={{uri: image}} style={[DetailStyle.logo, {height:height*.3}]} resizeMode="contain"/>
             <Text style ={DetailStyle.titleText}>{title}</Text>
             <Text style ={DetailStyle.paragraph}>{description}</Text>
         </View>
@@ -21,6 +24,12 @@ const DetailStyle = StyleSheet.create({
       fontSize: 18,
       fontWeight: 'bold',
       color: '#333',
+    },
+    logo:{
+        maxWidth:600,
+        marginBottom: 5,
+        
+
     },
     paragraph: {
       marginVertical: 8,

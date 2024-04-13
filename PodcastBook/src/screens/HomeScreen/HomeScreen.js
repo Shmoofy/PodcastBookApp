@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
-import {View, Text, ScrollView,useWindowDimensions, SafeAreaView, FlatList,StyleSheet,TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView,useWindowDimensions, SafeAreaView, FlatList,StyleSheet,TouchableOpacity,Image} from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
 import PodcastCard from '../../components/PodcastCard'
 const { Client } = require('podcast-api');
@@ -40,7 +40,7 @@ const HomeScreen = () => {
             }).then((response) => {
 
               setPodcasts(response.data.podcasts);
-              console.log(podcasts);
+              //console.log(podcasts);
 
             }).catch((error) => {
 
@@ -65,18 +65,26 @@ const HomeScreen = () => {
         
         <View>
             <Text style={{ marginVertical:height*.05,fontSize: 24, alignSelf: 'center'}}>Explore Page</Text>
-            <FlatList style={{marginBottom:height*.08}}data={podcasts} renderItem={({item}) => (
-                
-                <TouchableOpacity onPress={() =>
-                    {
-                        navigation.navigate('PodcastDetails', item)
-                    }
-                } >
-                    <PodcastCard>
-                        <Text style ={styles.placeholder}>{item.title}</Text>
-                    </PodcastCard>
-                </TouchableOpacity>
-            )}/>
+            <FlatList style={{marginBottom:height*.2}}data={podcasts} renderItem={({item}) => 
+            {
+                console.log("Image URL:",item.image);
+                return(
+                    
+                    <TouchableOpacity onPress={() =>{navigation.navigate('PodcastDetails', item)}} >
+                        <PodcastCard image=
+                            {<Image 
+                                source={{ uri: item.image }} 
+                                style={[styles.podcastLogo,{height: height * .08,borderRadius:20,}]} 
+                                resizeMode="contain" 
+                            />} >
+                            
+                            <Text style ={styles.title}>
+                                {item.title}
+                            </Text>
+                        </PodcastCard>
+                    </TouchableOpacity>
+                )
+            }}/>
         </View>
     );
 };
@@ -89,10 +97,15 @@ const styles = StyleSheet.create({
         padding: 40,
 
     },
-    placeholder: {
+    podcastLogo:{
+        maxWidth:100,
+        marginBottom: 2,
+        
+    },
+    title: {
         fontSize: 16,
-        alignContent: 'flex-start',
-        padding : 20,
+        textAlign: 'left',
+        padding : 10,
     },
     filler: {
         paddingVertical:50
