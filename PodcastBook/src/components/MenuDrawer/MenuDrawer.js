@@ -9,12 +9,12 @@ import PodcastDetails from '../../screens/PodcastDetailsScreen/PodcastDetailsScr
 
 const Drawer = createDrawerNavigator();
 
-const CustomDrawerContent = ({ navigation, state }) => {
+const CustomDrawerContent = ({ navigation, state}) => {
   const currentRouteName = state.routes[state.index].name;
 
   return (
     <DrawerContentScrollView>
-      {state.routes.map((route) => {
+      {state.routes.map((route)=> {
         // Check if the route name is not the same as the current screen name
         if (route.name !== currentRouteName && route.name !== 'PodcastDetails') {
           return (
@@ -39,13 +39,14 @@ const CustomDrawerContent = ({ navigation, state }) => {
   );
 };
 
-const MenuDrawer = () => {
+const MenuDrawer = ({route}) => {
+  const userId = route.params?.userId;
   return (
-    <Drawer.Navigator drawerContent={({ navigation, state }) => <CustomDrawerContent navigation={navigation} state={state} />}>
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="About" component={AboutScreen} />
-        <Drawer.Screen name="Settings" component={SettingsScreen} />
-        <Drawer.Screen name="PodcastDetails" component={PodcastDetails} />
+    <Drawer.Navigator drawerContent={({ navigation, state}) => <CustomDrawerContent navigation={navigation} state={state}  />}>
+        <Drawer.Screen name="Home" component={HomeScreen} initialParams={{userId:userId}}/>
+        <Drawer.Screen name="About" component={AboutScreen} initialParams={{userId:userId}}/>
+        <Drawer.Screen name="Settings" component={SettingsScreen} initialParams={{userId:userId}}/>
+        <Drawer.Screen name="PodcastDetails" component={PodcastDetails} initialParams={{userId:userId}}/>
     </Drawer.Navigator>
   );
 };

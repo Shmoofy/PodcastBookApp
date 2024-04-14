@@ -7,14 +7,17 @@ const PodcastDetails = ({route}) =>
 {
     const {height} = useWindowDimensions();
     const {title,description,image} = route.params;
+    const userId = route.params?.userId;
     console.log("In podcast detail screen");
     console.log("title=",title);
     console.log(image);
+    console.log("details userid:",userId);
     return (
         <View style = {DetailStyle.container}>
             <Image source={{uri: image}} style={[DetailStyle.logo, {height:height*.3}]} resizeMode="contain"/>
             <Text style ={DetailStyle.titleText}>{title}</Text>
             <Text style ={DetailStyle.paragraph}>{description}</Text>
+            
         </View>
     )
 }

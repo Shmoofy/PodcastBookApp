@@ -1,11 +1,13 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect, useLayoutEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {View, Text, ScrollView,useWindowDimensions, SafeAreaView, FlatList,StyleSheet,TouchableOpacity,Image} from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
 import PodcastCard from '../../components/PodcastCard'
 const { Client } = require('podcast-api');
 
-const HomeScreen = () => {
+const HomeScreen = ({route}) => {
+    console.log("in home screen");
+
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
     const [searchQuery, setSearchQuery] = useState('');
@@ -20,15 +22,16 @@ const HomeScreen = () => {
     // const [searchType, setSearchType] = useState('Podcast');
     // const [searchInput, setSearchInput] = useState('');
 
-    useEffect(() => {
-        // Call openDrawer function when HomeScreen is reached
-        openDrawer();
-    }, []);
-
-    const openDrawer = () => {
-        navigation.navigate('MenuScreen');
-    };
-
+    const userId  = route.params?.userId;
+    console.log("homescreen UID",userId);
+    //const openDrawer = () => {
+    //    navigation.navigate('MenuScreen',{userId: userId});
+   // };
+   // useLayoutEffect(() => {
+        //Call openDrawer function when HomeScreen is reached
+     //   openDrawer();
+    //}, []);
+    
     const fetchInitialPodcasts = async () => {
         const client = Client({ apiKey: '' });
         try {
@@ -56,7 +59,7 @@ const HomeScreen = () => {
 
     // initial podcast load up, gotten from web-app
     useEffect(() => {
-        
+            console.log("fetching");
            fetchInitialPodcasts();
          },[]);
 
@@ -67,10 +70,10 @@ const HomeScreen = () => {
             <Text style={{ marginVertical:height*.05,fontSize: 24, alignSelf: 'center'}}>Explore Page</Text>
             <FlatList style={{marginBottom:height*.2}}data={podcasts} renderItem={({item}) => 
             {
-                console.log("Image URL:",item.image);
+                //console.log("Image URL:",item.image);
                 return(
                     
-                    <TouchableOpacity onPress={() =>{navigation.navigate('PodcastDetails', item)}} >
+                    <TouchableOpacity onPress={() =>{navigation.navigate('PodcastDetails', {...item,userId:userId})}} >
                         <PodcastCard image=
                             {<Image 
                                 source={{ uri: item.image }} 

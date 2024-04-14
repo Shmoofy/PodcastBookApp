@@ -15,7 +15,10 @@ import AboutScreen from '../screens/AboutScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import PodcastDetails from '../screens/PodcastDetailsScreen/PodcastDetailsScreen';
 const Stack = createNativeStackNavigator();
-
+/*<Stack.Screen name="About" component={AboutScreen}/>
+<Stack.Screen name="Settings" component={SettingsScreen}/>
+<Stack.Screen name= "HomeScreen" component={HomeScreen} />
+<Stack.Screen name= "PodcastDetails" component={PodcastDetails}/>*/
 const Navigation = () => {
     return (
         <NavigationContainer >
@@ -25,11 +28,9 @@ const Navigation = () => {
                 <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
                 <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
-                <Stack.Screen name="About" component={AboutScreen}/>
-                <Stack.Screen name="Settings" component={SettingsScreen}/>
+                
                 <Stack.Screen name = "MenuScreen" component={MenuDrawer}/>
-                <Stack.Screen name= "HomeScreen" component={HomeScreen} />
-                <Stack.Screen name= "PodcastDetails" component={PodcastDetails}/>
+                
 
             </Stack.Navigator>
         </NavigationContainer>

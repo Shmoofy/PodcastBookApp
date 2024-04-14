@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, ScrollView, SafeAreaView, FlatList,StyleSheet} from 'react-native';
 
-const SettingsScreen = ()=>
+const SettingsScreen = ({route})=>
 {
+    const userId = route.params.userId;
+    console.log("userid settingsUID:", userId);
     return(
         <View>
             <View>

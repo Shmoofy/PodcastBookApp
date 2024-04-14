@@ -36,7 +36,7 @@ const SignInScreen = () => {
         } else {
             console.log("user signed in successfully");
             console.log(res);
-            navigation.navigate('HomeScreen', {userId: res.userId});
+            navigation.navigate('MenuScreen', {userId: res.UserID});
         }
         
     }
