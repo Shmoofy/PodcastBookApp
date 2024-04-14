@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, ScrollView, SafeAreaView, FlatList,StyleSheet} from 'react-native';
 
-const AboutScreen = ()=>
+const AboutScreen = ({route})=>
 {
+    const userId = route.params.userId;
+    console.log("userid aboutscreen:", userId);
     return(
         <View>
             <View>

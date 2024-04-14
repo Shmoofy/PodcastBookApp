@@ -34,7 +34,7 @@ const ConfirmEmailScreen = ({route}) => {
             updateNotification(setMessage, res.error);
             console.log(res);
         } else {
-            navigation.dispatch(StackActions.replace('HomeScreen', {profile: res.userId}));
+            navigation.navigate(('MenuScreen', {userId: res.userId}));
         }
         
         //console.log(res.userId);
