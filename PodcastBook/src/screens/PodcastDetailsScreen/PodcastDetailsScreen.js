@@ -1,13 +1,19 @@
 import React,{useState,useEffect} from "react";
 import { StyleSheet,View,Text,Image, useWindowDimensions} from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import CustomButton from "../../components/CustomButton";
+import { Button } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+
 import { getReviews } from "../../components/podcastsAPI";
 import ReviewCard from "../../components/ReviewCard/PodcastCard/ReviewCard";
-import { ScrollView } from "react-native-gesture-handler";
+
 
 
 const PodcastDetails = ({route}) =>
 {
     const {height} = useWindowDimensions();
+    const navigation = useNavigation();
     const {title,description,image} = route.params;
     const userId = route.params?.userId;
     //const [reviews, setReviews] = useState([]);
@@ -51,12 +57,21 @@ const PodcastDetails = ({route}) =>
     }, [title]); // Dependency array to re-run effect when userId changes
 
 
+
+    const writeReview = () => {
+        navigation.navigate('WriteReview', {userId: userId, title: title});
+    }
+
     return (
       <ScrollView>
         <View style = {DetailStyle.container}>
             <Image source={{uri: image}} style={[DetailStyle.logo, {height:height*.3}]} resizeMode="contain"/>
             <Text style ={DetailStyle.titleText}>{title}</Text>
             <Text style ={DetailStyle.paragraph}>{description}</Text>
+            <CustomButton 
+              text = "Add Review"
+              onPress={writeReview}/>
+
             {reviews.map((review) => (
             <ReviewCard key={review._id}>
               <View style={{flexDirection:"row"}}>
