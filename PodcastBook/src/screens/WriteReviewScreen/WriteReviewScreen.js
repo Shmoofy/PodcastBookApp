@@ -23,6 +23,7 @@ const WriteReviewScreen = ({route}) => {
     const navigation = useNavigation();
     const userId = route.params.userId;
     const title = route.params.title;
+    
     console.log("In write review screen");
     console.log("title=",title);
     console.log("write review userid:",userId);
@@ -57,6 +58,8 @@ const WriteReviewScreen = ({route}) => {
         } else {
             console.log("review submitted successfully");
             console.log(res);
+
+            
             navigation.goBack();
         }
         
