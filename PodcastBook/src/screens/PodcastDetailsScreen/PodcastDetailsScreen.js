@@ -3,8 +3,8 @@ import { StyleSheet,View,Text,Image, useWindowDimensions} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import CustomButton from "../../components/CustomButton";
 import { Button } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-
+import { useNavigation, useFocusEffect  } from "@react-navigation/native";
+import { useIsFocused } from '@react-navigation/native';
 import { getReviews } from "../../components/podcastsAPI";
 import ReviewCard from "../../components/ReviewCard/PodcastCard/ReviewCard";
 
@@ -19,56 +19,100 @@ const PodcastDetails = ({route}) =>
     //const [reviews, setReviews] = useState([]);
     console.log("In podcast detail screen");
     console.log("title=",title);
-    //console.log(image);
     console.log("details userid:",userId);
 
+    const isFocused = useIsFocused();
     const [reviews, setReviews] = useState([]);
     const [totalReviews, setTotalReviews] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
     const [comments, setComments] = useState([]);
 
-    useEffect(() => {
-      const fetchReviews = async () => {
+    const [refresh, setRefresh] = useState(false);
 
-        try {
-          const data = await getReviews(title); // Call your getReviews API function
-          console.log('API response:', data);
 
-          if (data.message == "Request failed with status code 404") {
-            console.log("No reviews found in if");
-            setReviews([{}]);
-            setTotalReviews(0);
+    
+
+
+    // useEffect(() => {
+    //   const fetchReviews = async () => {
+
+    //     try {
+    //       const data = await getReviews(title); // Call your getReviews API function
+    //       //console.log('API response:', data);
+
+    //       if (data.message == "Request failed with status code 404") {
+    //         console.log("No reviews found in if");
+    //         setReviews([{}]);
+    //         setTotalReviews(0);
   
-          }
+    //       }
   
-          if (data && data.reviews) {
+    //       if (data && data.reviews) {
             
-            setReviews(data.reviews);
-            setTotalReviews(data.totalReviews);
-            console.log(reviews);
-            //console.log("TESTNIG CMT",reviews.Comment);
-            console.log(totalReviews);
+    //         setReviews(data.reviews);
+    //         setTotalReviews(data.totalReviews);
+    //         console.log(reviews);
+    //         //console.log("TESTNIG CMT",reviews.Comment);
+    //         console.log(totalReviews);
 
-            // Extract comments from reviews
-            //const commentList = data.reviews.map((review) => review.Comment);
-            //setComments(commentList);
+    //         // Extract comments from reviews
+    //         //const commentList = data.reviews.map((review) => review.Comment);
+    //         //setComments(commentList);
+    //       }
+  
+    //       setIsLoading(false);
+    //     } catch (error) {
+    //       console.error('Error fetching reviews:', error);
+    //       setIsLoading(false);
+    //     }
+    //   };
+  
+    //   fetchReviews();
+    // }, [title]); // Dependency array to re-run effect when userId changes
+
+    useFocusEffect(
+      React.useCallback(() => {
+        const fetchReviews = async () => {
+
+          try {
+            const data = await getReviews(title); // Call your getReviews API function
+            //console.log('API response:', data);
+  
+            if (data.message == "Request failed with status code 404") {
+              console.log("No reviews found in if");
+              setReviews([{}]);
+              setTotalReviews(0);
+    
+            }
+    
+            if (data && data.reviews) {
+              
+              setReviews(data.reviews);
+              setTotalReviews(data.totalReviews);
+              console.log(reviews);
+              //console.log("TESTNIG CMT",reviews.Comment);
+              console.log(totalReviews);
+  
+              // Extract comments from reviews
+              //const commentList = data.reviews.map((review) => review.Comment);
+              //setComments(commentList);
+            }
+    
+            setIsLoading(false);
+          } catch (error) {
+            console.error('Error fetching reviews:', error);
+            setIsLoading(false);
           }
-  
-          setIsLoading(false);
-        } catch (error) {
-          console.error('Error fetching reviews:', error);
-          setIsLoading(false);
-        }
-      };
-  
-      fetchReviews();
-    }, [title]); // Dependency array to re-run effect when userId changes
-
-
+        };
+        // Fetch reviews when screen comes into focus
+        fetchReviews();
+      }, [title])
+    );
 
     const writeReview = () => {
-        navigation.navigate('WriteReview', {userId: userId, title: title});
+        navigation.navigate('WriteReview', {userId: userId, title: title, refresh:refresh});
+        
     }
 
     return (
