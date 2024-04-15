@@ -11,8 +11,8 @@ import ConfirmEmailScreen from '../screens/ConfirmEmailScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import NewPasswordScreen from '../screens/NewPasswordScreen';
 import HomeScreen from '../screens/HomeScreen';
-import AboutScreen from '../screens/AboutScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import AboutScreen from '../screens/FollowingScreen';
+import SettingsScreen from '../screens/AccountScreen';
 import PodcastDetails from '../screens/PodcastDetailsScreen/PodcastDetailsScreen';
 const Stack = createNativeStackNavigator();
 /*<Stack.Screen name="About" component={AboutScreen}/>
