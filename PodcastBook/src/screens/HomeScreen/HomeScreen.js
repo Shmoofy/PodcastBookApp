@@ -43,7 +43,7 @@ const HomeScreen = ({route}) => {
             }).then((response) => {
 
               setPodcasts(response.data.podcasts);
-              //console.log(podcasts);
+              console.log(podcasts);
 
             }).catch((error) => {
 

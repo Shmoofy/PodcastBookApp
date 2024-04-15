@@ -2,7 +2,7 @@ import React from "react";
 import { View , Text, TextInput, StyleSheet} from "react-native";
 import { Controller } from "react-hook-form";
 
-const CustomInput = ({control, name, rules = {} ,placeholder, secureTextEntry}) => {
+const CustomInput = ({control, name, rules = {} ,placeholder, secureTextEntry, type}) => {
     return (
             <Controller 
                 control={control}
@@ -10,7 +10,7 @@ const CustomInput = ({control, name, rules = {} ,placeholder, secureTextEntry}) 
                 rules={rules}
                 render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
                 <>
-                    <View style={[styles.container, {borderColor: error ? 'red' : '#e8e8e8' }]}>
+                    <View style={[styles.container, styles[`container_${type}`], {borderColor: error ? 'red' : '#e8e8e8' }]}>
                         <TextInput 
                             value={value} 
                             onChangeText={onChange} 
@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
 
     },
     input: {},
+    container_BIG: {
+        borderColor: '#3B71F3',
+        borderWidth: 2,
+        height: 200,
+
+    },
 
 })
 
