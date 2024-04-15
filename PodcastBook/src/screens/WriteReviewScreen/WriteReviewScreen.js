@@ -1,0 +1,144 @@
+import React, {useState} from "react";
+import { View, Text, Image, StyleSheet, useWindowDimensions, ScrollView, TextInput, TouchableOpacity} from "react-native";
+import backButton from '../../../assets/images/back-button.png';
+import CustomInput from "../../components/CustomInput";
+import CustomButton from "../../components/CustomButton";
+
+import { useNavigation } from "@react-navigation/native";
+
+import { useForm, Controller} from 'react-hook-form';
+
+import AppNotifcation from "../AppNotification/AppNotification";
+import { updateNotification } from "../../components/helper";
+
+import { getUserInfo, submitReview } from "../../components/apiHelper";
+
+const NUM_REGEX = /[1-5]$/;
+
+
+
+const WriteReviewScreen = ({route}) => {
+
+    const {height} = useWindowDimensions();
+    const navigation = useNavigation();
+    const userId = route.params.userId;
+    const title = route.params.title;
+    console.log("In write review screen");
+    console.log("title=",title);
+    console.log("write review userid:",userId);
+
+
+
+    
+
+
+
+
+
+    const [message, setMessage] = useState({
+        text: '',
+        type:''
+    })
+
+    const {control, handleSubmit, formState: {errors}} = useForm();
+
+    const onSubmitReview = async(data) => {
+        console.warn("submit review");
+        console.log(data);
+
+        const userInfo = await getUserInfo(userId);
+        const username = userInfo.user.Username;
+        console.log(username);
+
+        const res = await submitReview(data, userId, title, username);
+        
+        if(res.error) {
+            updateNotification(setMessage, res.error);
+        } else {
+            console.log("review submitted successfully");
+            console.log(res);
+            navigation.goBack();
+        }
+        
+    }
+
+
+    return (
+        <>
+        {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
+
+        <ScrollView>
+            <View style={styles.root}>
+                
+
+            <View style={styles.filler}></View>
+
+            <CustomInput
+                name="Comment"
+                placeholder="Write your Review"
+                control={control}
+                rules={{required: 'Review is required'}}
+                type = "BIG"
+            />
+
+            <CustomInput
+                name="Rating"
+                placeholder={"Rating (1-5)"}
+                control={control}
+                rules={{required: 'Rating is required',
+                        pattern: {value: NUM_REGEX, message: 'Rating must be between 1 and 5'}
+                        }}
+            />
+
+            <CustomButton
+            text="Submit Review"
+            onPress={handleSubmit(onSubmitReview)}
+            />
+
+            <View style={styles.filler}></View>
+
+            <CustomButton
+            text="Go Back"
+            onPress={() => navigation.goBack()}
+            type="SECONDARY"
+            />
+
+            </View>
+        </ScrollView>
+        
+        </>
+        
+    );
+};
+
+const styles = StyleSheet.create({
+    root: {
+        alignItems: 'center',
+        padding: 40,
+
+    },
+    logo: {
+        maxWidth:300,
+        marginBottom: 10,
+    },
+    filler: {
+        paddingVertical:50
+    },
+    text: {
+        color: 'black',
+        
+    }
+});
+
+
+export default WriteReviewScreen;
+
+
+
+/*
+<View style={{position: 'absolute', top: 0, left: 0}}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Image source={backButton} style= {{width:50, height:50}}/> 
+                    </TouchableOpacity>
+                </View>
+*/

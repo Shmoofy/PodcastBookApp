@@ -6,6 +6,7 @@ import SettingsScreen from '../../screens/SettingsScreen';
 import AboutScreen from '../../screens/AboutScreen';
 import HomeScreen from '../../screens/HomeScreen';
 import PodcastDetails from '../../screens/PodcastDetailsScreen/PodcastDetailsScreen';
+import WriteReviewScreen from '../../screens/WriteReviewScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -47,6 +48,7 @@ const MenuDrawer = ({route}) => {
         <Drawer.Screen name="About" component={AboutScreen} initialParams={{userId:userId}}/>
         <Drawer.Screen name="Settings" component={SettingsScreen} initialParams={{userId:userId}}/>
         <Drawer.Screen name="PodcastDetails" component={PodcastDetails} initialParams={{userId:userId}}/>
+        <Drawer.Screen name="WriteReview" component={WriteReviewScreen} initialParams={{userId:userId}}/>
     </Drawer.Navigator>
   );
 };
