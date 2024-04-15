@@ -17,7 +17,7 @@ const CustomDrawerContent = ({ navigation, state}) => {
     <DrawerContentScrollView>
       {state.routes.map((route)=> {
         // Check if the route name is not the same as the current screen name
-        if (route.name !== currentRouteName && route.name !== 'PodcastDetails') {
+        if (route.name !== currentRouteName && route.name !== 'PodcastDetails' && route.name !== 'WriteReview') {
           return (
             <DrawerItem
               key={route.key}

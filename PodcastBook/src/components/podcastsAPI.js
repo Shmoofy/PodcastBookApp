@@ -8,7 +8,8 @@ export const getReviews = async (title) => {
         console.log("API",data);
         return data;
     } catch (error) {
-        return catchErrorER(error);
+        //console.log(error.response);
+        return error;
     }
 }
 //fetching reviews error

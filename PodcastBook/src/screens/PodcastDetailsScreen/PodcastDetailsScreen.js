@@ -30,11 +30,20 @@ const PodcastDetails = ({route}) =>
 
     useEffect(() => {
       const fetchReviews = async () => {
+
         try {
           const data = await getReviews(title); // Call your getReviews API function
           console.log('API response:', data);
+
+          if (data.message == "Request failed with status code 404") {
+            console.log("No reviews found in if");
+            setReviews([{}]);
+            setTotalReviews(0);
+  
+          }
   
           if (data && data.reviews) {
+            
             setReviews(data.reviews);
             setTotalReviews(data.totalReviews);
             console.log(reviews);
@@ -78,7 +87,7 @@ const PodcastDetails = ({route}) =>
 
                 <View style={{flex:1}}>
                   <Text style={DetailStyle.boldItemsUsername}>
-                    {review.Username}:   
+                    {review.Username ? review.Username : "No reviews for this podcast"}:   
                   </Text>
                 </View>
 
@@ -96,7 +105,7 @@ const PodcastDetails = ({route}) =>
                 <View style={{flex:1}}>
 
                   <Text style={DetailStyle.boldItemsRating}>
-                      Rating:{review.Rating} Stars
+                      {review.Rating ? `Rating: ${review.Rating} Stars` : null}
                   </Text>
 
                 </View>
