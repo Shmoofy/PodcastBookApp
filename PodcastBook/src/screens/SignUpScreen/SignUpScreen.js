@@ -34,7 +34,7 @@ const SignUpScreen = () => {
         } else {
             console.log("user created successfully");
             console.log(res);
-            navigation.dispatch(StackActions.replace('ConfirmEmail', {userId: res.userId}));
+            navigation.dispatch(StackActions.replace('ConfirmEmail', {userId: res.UserID}));
         }
         
         

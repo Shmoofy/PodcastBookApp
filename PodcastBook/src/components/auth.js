@@ -33,8 +33,9 @@ export const verify = async (otp, userId) => {
     try {
         //console.log("in verify auth");
         //console.log({otp, userId});
+        console.log("in api call",userId);
         const  reqData  = {
-            userId : userId.userId,
+            UserID : userId,
             otp : otp.otp
         }
         //console.log(reqData);

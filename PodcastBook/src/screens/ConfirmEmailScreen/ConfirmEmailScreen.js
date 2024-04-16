@@ -13,7 +13,9 @@ import { StackActions } from '@react-navigation/native';
 
 const ConfirmEmailScreen = ({route}) => {
 
-    const {userId} = route.params;
+    const userId = route.params.userId;
+
+    console.log("in confirm email screen", userId);
 
     const navigation = useNavigation();
 
@@ -29,12 +31,14 @@ const ConfirmEmailScreen = ({route}) => {
     const onConfirmPressed = async(data) => {
         console.warn(data);
         console.log({userId});
-        const res = await verify(data, {userId});
+        const res = await verify(data, userId);
         if(res.error) {
             updateNotification(setMessage, res.error);
             console.log(res);
         } else {
-            navigation.navigate(('MenuScreen', {userId: res.userId}));
+            console.log("user verified successfully");
+            console.log(res);
+            navigation.navigate('MenuScreen', {userId: userId});
         }
         
         //console.log(res.userId);
