@@ -2,38 +2,93 @@ import React, {useState,useEffect, useLayoutEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {View, Text, ScrollView,useWindowDimensions, SafeAreaView, FlatList,StyleSheet,TouchableOpacity,Image} from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
-import PodcastCard from '../../components/PodcastCard'
+import PodcastCard from '../../components/PodcastCard';
+import SearchBar from '../../components/SearchBar/SearchBar';
 const { Client } = require('podcast-api');
+
+const normalizeData = (data) => {
+    const normalizedData = {
+      title: data.title_original || data.title,
+      image: data.image,
+      description: data.description || data.description_highlighted,
+    //   id: data.id,
+    //   type: data.audio ? 'episode' : 'podcast',
+    }
+  
+    if (data.audio) {
+      normalizedData.audio = data.audio;
+    } else {
+      normalizedData.episodeCount = data.total_episodes;
+    }
+  
+    return normalizedData;
+  };
 
 const HomeScreen = ({route}) => {
     console.log("in home screen");
 
+    const API_KEY = '';
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
+
+    const [searchType, setSearchType] = useState('podcast');
     const [searchQuery, setSearchQuery] = useState('');
+    const [hasSearched, setHasSearched] = useState(false);
+
     const [podcasts, setPodcasts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [hasSearched, setHasSearched] = useState(false);
+    
     const [error, setError] = useState('');
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    // const [reviews, setReviews] = useState([]);
-    // const [searchType, setSearchType] = useState('Podcast');
-    // const [searchInput, setSearchInput] = useState('');
 
+    
     const userId  = route.params?.userId;
     console.log("homescreen UID",userId);
-    //const openDrawer = () => {
-    //    navigation.navigate('MenuScreen',{userId: userId});
-   // };
-   // useLayoutEffect(() => {
-        //Call openDrawer function when HomeScreen is reached
-     //   openDrawer();
-    //}, []);
+    
+    const handleClearIconPress = () => {
+        setSearchQuery(''); // Clear the search query
+        fetchPodcasts(); // Fetch podcasts with an empty search query
+        
+      };
+
+    const fetchPodcasts = async () => {
+        setIsLoading(true);
+        setHasSearched(true);
+    
+        if (!searchQuery.trim()){
+        //   console.error('Error: Search query cannot be empty');
+          fetchInitialPodcasts();
+        //   setIsLoading(false); 
+        //   setHasSearched(false);
+          return; 
+        }
+    
+        const client = Client({ apiKey: API_KEY });
+        try {
+          // Use the search method from the client
+          const response = await client.search({
+            q: searchQuery,
+            type: searchType, 
+            language: 'English',
+            region: 'us'
+          });
+    
+          console.log('Podcasts searched', response.data.results);
+          const normalizedPodcasts = response.data.results.map(normalizeData);
+          setPodcasts(normalizedPodcasts);
+          
+          //setLastSearchType(searchType);
+        } catch (error) {
+          console.error('Error fetching podcasts:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
     
     const fetchInitialPodcasts = async () => {
-        const client = Client({ apiKey: '' });
+        const client = Client({ apiKey: API_KEY });
         try {
               client.fetchBestPodcasts({
               region: 'us',
@@ -43,7 +98,7 @@ const HomeScreen = ({route}) => {
             }).then((response) => {
 
               setPodcasts(response.data.podcasts);
-              console.log(podcasts);
+              console.log({podcasts});
 
             }).catch((error) => {
 
@@ -63,14 +118,22 @@ const HomeScreen = ({route}) => {
            fetchInitialPodcasts();
          },[]);
 
-
+    
     return (
         
         <View style={styles.root}>
-            <Text style={{ marginVertical:height*.05,fontSize: 24, alignSelf: 'center'}}>Explore Page</Text>
-            <FlatList style={{marginBottom:height*.2}}data={podcasts} renderItem={({item}) => 
+            
+            <View style={{marginTop:height*.025, marginBottom:height*.018}}>
+                <SearchBar
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    handleSearch={fetchPodcasts}
+                />
+            </View>
+            
+            <FlatList style={{marginBottom:height*.15}}data={podcasts} renderItem={({item}) => 
             {
-                //console.log("Image URL:",item.image);
+                
                 return(
                     
                     <TouchableOpacity onPress={() =>{navigation.navigate('PodcastDetails', {...item,userId:userId})}} >

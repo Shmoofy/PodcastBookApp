@@ -14,7 +14,9 @@ const PodcastDetails = ({route}) =>
 {
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
+
     const {title,description,image} = route.params;
+  
     const userId = route.params?.userId;
     //const [reviews, setReviews] = useState([]);
     console.log("In podcast detail screen");
@@ -31,45 +33,6 @@ const PodcastDetails = ({route}) =>
     const [refresh, setRefresh] = useState(false);
 
 
-    
-
-
-    // useEffect(() => {
-    //   const fetchReviews = async () => {
-
-    //     try {
-    //       const data = await getReviews(title); // Call your getReviews API function
-    //       //console.log('API response:', data);
-
-    //       if (data.message == "Request failed with status code 404") {
-    //         console.log("No reviews found in if");
-    //         setReviews([{}]);
-    //         setTotalReviews(0);
-  
-    //       }
-  
-    //       if (data && data.reviews) {
-            
-    //         setReviews(data.reviews);
-    //         setTotalReviews(data.totalReviews);
-    //         console.log(reviews);
-    //         //console.log("TESTNIG CMT",reviews.Comment);
-    //         console.log(totalReviews);
-
-    //         // Extract comments from reviews
-    //         //const commentList = data.reviews.map((review) => review.Comment);
-    //         //setComments(commentList);
-    //       }
-  
-    //       setIsLoading(false);
-    //     } catch (error) {
-    //       console.error('Error fetching reviews:', error);
-    //       setIsLoading(false);
-    //     }
-    //   };
-  
-    //   fetchReviews();
-    // }, [title]); // Dependency array to re-run effect when userId changes
 
     useFocusEffect(
       React.useCallback(() => {
@@ -149,7 +112,7 @@ const PodcastDetails = ({route}) =>
                 <View style={{flex:1}}>
 
                   <Text style={DetailStyle.boldItemsRating}>
-                      {review.Rating ? `Rating: ${review.Rating} Stars` : null}
+                      {review.Rating ? `Rating: ${review.Rating}` : null}
                   </Text>
 
                 </View>

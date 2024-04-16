@@ -21,6 +21,20 @@ export const submitReview = async (values,userId, title, username) => {
     }
 }
 
+export const editReview = async (packageData) => {
+    //const navigation = useNavigation();
+
+    
+    try {
+        console.log("in api call");
+        console.log(packageData);
+        const {data} = await client.put('../podcast/editReview', packageData);
+        return data;
+    } catch (error) {
+        return error;
+    }
+}
+
 export const getUserInfo = async (userId) => {
 
     try {
