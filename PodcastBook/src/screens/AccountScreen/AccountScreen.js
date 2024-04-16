@@ -1,10 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, SafeAreaView, FlatList,StyleSheet, useWindowDimensions} from 'react-native';
+import {View, Text, SafeAreaView, FlatList,StyleSheet, useWindowDimensions, TouchableOpacity, Image, Modal} from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import ReviewCard from "../../components/ReviewCard/PodcastCard/ReviewCard";
-import { getUserInfo } from "../../components/apiHelper";
 import { getUserReviews } from "../../components/podcastsAPI";
+
+import deleteIcon from "../../../assets/images/delete-icon.png";
+import editIcon from "../../../assets/images/edit-icon.png";
+import { useForm, Controller} from 'react-hook-form';
+import { getUserInfo, editReview } from "../../components/apiHelper";
+import CustomInput from "../../components/CustomInput";
+import CustomButton from "../../components/CustomButton";
+import { TextInput } from 'react-native-paper';
+import AppNotifcation from "../AppNotification/AppNotification";
+import { updateNotification } from "../../components/helper";
+import { useIsFocused } from '@react-navigation/native';
+
 
 const AccountScreen = ({route})=>
 {
@@ -16,12 +27,14 @@ const AccountScreen = ({route})=>
     const [totalReviews, setTotalReviews] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        
-        
+    useFocusEffect(
+
+      React.useCallback(() => {
+      
         getInfo();
         fetchReviews();
-    },[userId]);
+      },[userId])  
+    );
 
     const getInfo = async () => {
         const userInfo = await getUserInfo(userId);
@@ -62,47 +75,85 @@ const AccountScreen = ({route})=>
         }
     };
 
+    //stuff for delete/edit review modals
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const {control, handleSubmit, formState: {errors}} = useForm();
+    
+
+    const NUM_REGEX = /[1-5]$/;
+
+
+    const handleDeleteReview = (review) => {
+      // Logic to handle delete review action
+      setIsModalVisible(true); // Open the modal
+    };
+
+    
+    
+
 
     return(
         <ScrollView>
           <View style = {DetailStyle.container}>
-            <Text style={styles.setting}>Settings</Text>
             <Text style={styles.setting}>My Reviews</Text>
             
             {reviews.map((review) => (
-                
-            <ReviewCard key={review._id}>
-              <View style={{flexDirection:"row"}}>
-
-                <View style={{flex:1}}>
-                  <Text style={DetailStyle.boldItemsTitle}>
-                    {review.Podcast ? review.Podcast : "You have not reviewed any podcasts yet."}:   
-                  </Text>
+              <>
+              <ReviewCard key={review._id}>
+                <View style={{ position: "relative" }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                    <Text style={DetailStyle.boldItemsTitle}>
+                      Podcast: {review.Podcast || "You have not reviewed any podcasts yet."}
+                    </Text>
+                  </View>
                 </View>
 
-                <View style={{flex:1}}>
-                  <Text style={DetailStyle.commentText}>
-                    {review.Comment}  
-                  </Text>
-                </View>
-                
-                
-
-              </View>
-
-              <View style={{flexDirection:"row"}}>
-                <View style={{flex:1}}>
-
+                <View style={{ flexDirection: "row", marginBottom: 8 }}>
                   <Text style={DetailStyle.boldItemsRating}>
-                      {review.Rating ? `Rating: ${review.Rating} Stars` : null}
+                    {review.Comment ? `Comment: ${review.Comment}` : `No comment provided.`}
                   </Text>
+                </View>
+
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={DetailStyle.boldItemsRating}>
+                    {review.Rating ? `Rating: ${review.Rating}` : null}
+                  </Text>
+                </View>
+
+                <View style={{ flexDirection: "row", paddingLeft:275 }}>
+
+                <TouchableOpacity onPress={() => navigation.navigate("EditReview",{ReviewID : review._id, Rating: review.Rating, Comment: review.Comment})}>
+                      <Image source={editIcon} style={{ width: 20, height: 20, marginRight: 8 }} />
+                  </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => handleDeleteReview(review)}>
+                      <Image source={deleteIcon} style={{ width: 20, height: 20, justifyContent: 'flex-end'}} />
+                </TouchableOpacity>
 
                 </View>
                 
-              </View>
-               
-            </ReviewCard>
-          ))}
+              </ReviewCard>
+
+
+              
+              <Modal animationType='slide' transparent={true} visible={isModalVisible} onRequestClose={()=> setIsModalVisible(false)}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                  <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
+                    <Text>This is a modal</Text>
+                    {/* Add your modal content here */}
+                    <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+                      <Text>Close Modal</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+              </>
+
+
+
+            ))}
+
+            
           
 
         </View>            
@@ -178,3 +229,6 @@ const DetailStyle = StyleSheet.create({
 
 
 export default AccountScreen; 
+
+//onPress={() => handleEditReview(review)}    onPress={() => handleDeleteReview(review)}
+//onPress={() => submitEdit(review)}

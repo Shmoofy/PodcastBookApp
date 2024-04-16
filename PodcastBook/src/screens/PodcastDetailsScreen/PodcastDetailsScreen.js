@@ -149,7 +149,7 @@ const PodcastDetails = ({route}) =>
                 <View style={{flex:1}}>
 
                   <Text style={DetailStyle.boldItemsRating}>
-                      {review.Rating ? `Rating: ${review.Rating} Stars` : null}
+                      {review.Rating ? `Rating: ${review.Rating}` : null}
                   </Text>
 
                 </View>
