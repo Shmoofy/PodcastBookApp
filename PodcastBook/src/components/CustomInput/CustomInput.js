@@ -2,7 +2,8 @@ import React from "react";
 import { View , Text, TextInput, StyleSheet} from "react-native";
 import { Controller } from "react-hook-form";
 
-const CustomInput = ({control, name, rules = {} ,placeholder, secureTextEntry, multiline, type, defaultValue}) => {
+const CustomInput = ({control, name, rules = {} ,placeholder, secureTextEntry, multiline, type,reset,defaultValue}) => {
+    
     return (
             <Controller 
                 control={control}

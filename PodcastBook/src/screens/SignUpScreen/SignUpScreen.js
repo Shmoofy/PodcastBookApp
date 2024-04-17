@@ -30,7 +30,7 @@ const SignUpScreen = () => {
         //backend validation
         const res = await signup(data);
         if(res.error) {
-            updateNotification(setMessage, res.error);
+            updateNotification(setMessage, res.error, 'error');
         } else {
             console.log("user created successfully");
             console.log(res);

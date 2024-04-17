@@ -13,10 +13,10 @@ const AppNotifcation = ({type, text}) => {
         }).start()
     }, [])
 
-    const backgroundColor = type === 'error' ? 'rgba(0, 255, 0, 0.7)' : 'rgba(255, 0, 0, 0.7)';
+    const backgroundColor = type === 'error' ? 'rgba(255, 0, 0, 0.7)' : 'rgba(0, 255, 0, 0.7)';
 
     return <Animated.View style={[styles.container, {height, backgroundColor}]}>
-        <Text style={{color: '#fff', fontSize: 16}}>{text}</Text>
+        <Text style={{color: 'black', fontSize: 16}}>{text}</Text>
     </Animated.View>
 }
 
@@ -28,3 +28,4 @@ const styles = StyleSheet.create({
 })
 
 export default AppNotifcation;
+
