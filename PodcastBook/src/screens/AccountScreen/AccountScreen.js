@@ -108,7 +108,7 @@ const AccountScreen = ({route})=>
 
     const NUM_REGEX = /[1-5]$/;
 
-
+    const [isSignOutModalVisible,setIsSignOutModalVisible] = useState(false);
     const handleDeleteReview = (review) => {
       // Logic to handle delete review action
       
@@ -130,10 +130,10 @@ const AccountScreen = ({route})=>
         {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
 
             <View style={{ flexDirection: "row-reverse", marginBottom: 8, paddingHorizontal:10, paddingTop: 10}}>
-                <TouchableOpacity onPress={() => handleDeleteReview(review)}>
+                <TouchableOpacity onPress={() => {}}>
                       <Image source={signOutIcon} style={{ width: 30, height: 30}} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleDeleteReview(review)}>
+                <TouchableOpacity onPress={() => {}}>
                       <Image source={settingsIcon} style={{ width: 29, height: 29, marginRight: 10}} />
                 </TouchableOpacity>
             </View>
