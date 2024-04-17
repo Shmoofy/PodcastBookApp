@@ -7,8 +7,11 @@ import { getUserReviews } from "../../components/podcastsAPI";
 
 import deleteIcon from "../../../assets/images/delete-icon.png";
 import editIcon from "../../../assets/images/edit-icon.png";
+import signOutIcon from "../../../assets/images/signOut.png";
+import settingsIcon from "../../../assets/images/settingsIcon.png";
+
 import { useForm, Controller} from 'react-hook-form';
-import { getUserInfo, editReview } from "../../components/apiHelper";
+import { getUserInfo, editReview,deleteReview } from "../../components/apiHelper";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { TextInput } from 'react-native-paper';
@@ -26,6 +29,11 @@ const AccountScreen = ({route})=>
     const [reviews, setReviews] = useState([]);
     const [totalReviews, setTotalReviews] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+
+    const [message, setMessage] = useState({
+      text: '',
+      type:''
+     })
 
     useFocusEffect(
 
@@ -76,30 +84,82 @@ const AccountScreen = ({route})=>
     };
 
     //stuff for delete/edit review modals
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    //const [isDeleteModalVis, setisDeleteModalVis] = useState(false);
+    const [isDeleteModalVis, setisDeleteModalVis] = useState({});
+
+    useEffect(() => {
+      // Initialize the isDeleteModalVis state object
+      const initialModalState = {};
+      reviews.forEach((review) => {
+          initialModalState[review._id] = false;
+      });
+      setisDeleteModalVis(initialModalState);
+  }, [reviews]);
+
+  const toggleDeleteModal = (reviewId) => {
+      setisDeleteModalVis(prevState => ({
+          ...prevState,
+          [reviewId]: !prevState[reviewId]
+      }));
+    };
+
     const {control, handleSubmit, formState: {errors}} = useForm();
     
 
     const NUM_REGEX = /[1-5]$/;
 
-
+    const [isSignOutModalVisible,setIsSignOutModalVisible] = useState(false);
     const handleDeleteReview = (review) => {
       // Logic to handle delete review action
-      setIsModalVisible(true); // Open the modal
+      
+      toggleDeleteModal(review._id) ;// Open the modal
     };
 
-    
+    const ActuallyDeleteReview = async(reviewID) =>{
+        const data = await deleteReview(reviewID);
+        console.log("message:",data.message);
+        toggleDeleteModal(reviewID);
+        fetchReviews();
+    };
     
 
 
     return(
+        <>
+
+        {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
+
+            <View style={{ flexDirection: "row-reverse", marginBottom: 8, paddingHorizontal:10, paddingTop: 10}}>
+                <TouchableOpacity onPress={() => {}}>
+                      <Image source={signOutIcon} style={{ width: 30, height: 30}} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {}}>
+                      <Image source={settingsIcon} style={{ width: 29, height: 29, marginRight: 10}} />
+                </TouchableOpacity>
+            </View>
+
+          <View style={{marginTop:4, marginBottom:4}}>  
+            <Text style={styles.setting}>My Reviews</Text>
+          </View>
+        <Modal animationType='slide' transparent={true} visible={isSignOutModalVisible} onRequestClose={()=> setIsSignOutModalVisible(false)}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                  <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
+                    <Text>This is a modal</Text>
+                    {/* Add your modal content here */}
+                    <TouchableOpacity onPress={() => setIsSignOutModalVisible(false)}>
+                      <Text>Close Modal</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+          </Modal>
+
         <ScrollView>
           <View style = {DetailStyle.container}>
-            <Text style={styles.setting}>My Reviews</Text>
+            
             
             {reviews.map((review) => (
               
-              <>
+              <React.Fragment key = { review._id}>
               <ReviewCard key={review._id}>
                 <View style={{ position: "relative" }}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
@@ -137,20 +197,24 @@ const AccountScreen = ({route})=>
 
 
               
-              <Modal animationType='slide' transparent={true} visible={isModalVisible} onRequestClose={()=> setIsModalVisible(false)}>
+              <Modal animationType='slide' transparent={true} visible={isDeleteModalVis[review._id]} onRequestClose={()=> toggleDeleteModal(review._id)}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                   <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
-                    <Text>This is a modal</Text>
-                    {/* Add your modal content here */}
-                    <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+                    <Text>{review.Podcast}{review._id}</Text>
+                    <CustomButton 
+                      type="DELETE"
+                      text = "Delete Review"
+                      onPress={()=>ActuallyDeleteReview(review._id)}
+                    />
+                    <TouchableOpacity onPress={() => toggleDeleteModal(review._id)}>
                       <Text>Close Modal</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
               </Modal>
-              </>
+              </React.Fragment>
             
-
+              
 
             ))}
 
@@ -159,14 +223,14 @@ const AccountScreen = ({route})=>
 
         </View>            
         </ScrollView>
-
+        </>
     );
 };
 
 
 const styles = StyleSheet.create({
     setting: {
-        alignItems: 'center',
+        textAlign: 'center',
         fontWeight: 'bold',
         paddingLeft: 10,
         paddingTop: 10,

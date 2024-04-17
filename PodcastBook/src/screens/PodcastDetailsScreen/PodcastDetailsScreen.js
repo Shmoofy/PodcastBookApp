@@ -88,38 +88,40 @@ const PodcastDetails = ({route}) =>
               text = "Add Review"
               onPress={writeReview}/>
 
-            {reviews.map((review) => (
-            <ReviewCard key={review._id}>
-              <View style={{flexDirection:"row"}}>
+            {reviews.map((review,index) => (
+              <React.Fragment key={index}>
+              <ReviewCard key={review._id}>
+                <View style={{flexDirection:"row"}}>
 
-                <View style={{flex:1}}>
-                  <Text style={DetailStyle.boldItemsUsername}>
-                    {review.Username ? review.Username : "No reviews for this podcast"}:   
-                  </Text>
-                </View>
+                  <View style={{flex:1}}>
+                    <Text style={DetailStyle.boldItemsUsername}>
+                      {review.Username ? review.Username : "No reviews for this podcast"}:   
+                    </Text>
+                  </View>
 
-                <View style={{flex:1}}>
-                  <Text style={DetailStyle.commentText}>
-                    {review.Comment}  
-                  </Text>
-                </View>
-                
-                
-
-              </View>
-
-              <View style={{flexDirection:"row"}}>
-                <View style={{flex:1}}>
-
-                  <Text style={DetailStyle.boldItemsRating}>
-                      {review.Rating ? `Rating: ${review.Rating}` : null}
-                  </Text>
+                  <View style={{flex:1}}>
+                    <Text style={DetailStyle.commentText}>
+                      {review.Comment}  
+                    </Text>
+                  </View>
+                  
+                  
 
                 </View>
+
+                <View style={{flexDirection:"row"}}>
+                  <View style={{flex:1}}>
+
+                    <Text style={DetailStyle.boldItemsRating}>
+                        {review.Rating ? `Rating: ${review.Rating}` : null}
+                    </Text>
+
+                  </View>
+                  
+                </View>
                 
-              </View>
-               
-            </ReviewCard>
+              </ReviewCard>
+            </React.Fragment>
           ))}
         </View>
       </ScrollView>
