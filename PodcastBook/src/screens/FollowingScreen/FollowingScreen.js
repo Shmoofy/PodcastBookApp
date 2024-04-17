@@ -30,7 +30,7 @@ const FollowingScreen = ({route})=>
     const [message, setMessage] = useState({
       text: '',
       type:''
-  })
+     })
     
 
 
