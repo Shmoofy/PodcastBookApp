@@ -39,8 +39,8 @@ const EditReviewScreen = ({route}) => {
 
     const submitEdit = async(data) => {
         // Logic to submit the edited review
-        console.log("in func");
-        console.log(data);
+        //console.log("in func");
+        //console.log(data);
         //console.log(data);
         const packageData = {
             "ReviewID": reviewId,
@@ -50,7 +50,7 @@ const EditReviewScreen = ({route}) => {
   
         const res = await editReview(packageData);
         if(res.error) {
-          updateNotification(setMessage, res.error);
+          updateNotification(setMessage, res.error, 'error');
         } else {
           console.log("review submitted successfully");
           console.log(res);

@@ -32,7 +32,7 @@ const SignInScreen = () => {
         const res = await signin(data);
         
         if(res.error) {
-            updateNotification(setMessage, res.error);
+            updateNotification(setMessage, res.error, 'error');
         } else {
             console.log("user signed in successfully");
             console.log(res);
