@@ -1,29 +1,68 @@
 import React, {useState} from "react";
-import { View, Text, StyleSheet, ScrollView} from "react-native";
+import { View, Text, StyleSheet, ScrollView, useWindowDimensions, Modal, TouchableOpacity} from "react-native";
 import CustomInput from '../../components/CustomInput';
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from 'react-hook-form';
+import { sendEmail } from "../../components/apiHelper";
+
+import AppNotifcation from "../AppNotification/AppNotification";
+import { updateNotification } from "../../components/helper";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 const ForgotPasswordScreen = () => {
 
-    const { control, handleSubmit} = useForm(); 
+    const {height} = useWindowDimensions();
+    const { control, handleSubmit, formState: {errors}} = useForm(); 
 
     const navigation = useNavigation();
 
-    const onSendPressed = (data) => {
-        console.warn(data);
-        navigation.navigate('NewPassword');
+    const [message, setMessage] = useState({
+        text: '',
+        type:''
+    })
+
+    const onSendPressed = async(data) => {
+        console.log(data.Email);
+
+        
+        try {
+
+            const res = await sendEmail(data.Email);
+            
+            if (res == "error") {
+                updateNotification(setMessage, "Email not found", 'error');
+                console.log("error in sending email");
+            } else {
+                console.log("email sent successfully");
+                //console.log("email sent successfully");
+                //console.log(res);
+               // updateNotification(setMessage, "Email Sent");
+                setIsModalVisible(true);
+                //navigation.navigate('SignIn');
+            } 
+        } catch (error) {
+            console.log("error in sending email catch");
+            console.log(error);
+        }
+        
+       // navigation.navigate('NewPassword');
+
     }
 
     const onSignInPress = () => {
-        console.warn('sign in');
+        //console.warn('sign in');
         navigation.navigate('SignIn');
     }
 
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+
     return (
+        <>
+        {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
+
         <ScrollView>
             <View style={styles.root}>
 
@@ -32,7 +71,7 @@ const ForgotPasswordScreen = () => {
                 
 
                 <CustomInput 
-                name="email"
+                name="Email"
                 placeholder="Enter your email"
                 control={control}
                 rules={{
@@ -52,7 +91,30 @@ const ForgotPasswordScreen = () => {
                 type = "TERTIARY"
                 />
             </View>
+
+
+            <Modal animationType='slide' transparent={true} visible={isModalVisible} onRequestClose={()=> setIsModalVisible(false)}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, .7)' }}>
+                  <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
+                    <Text style={{fontSize:20, textAlign: 'center', fontWeight: 'bold', paddingBottom: 30, color: '#28d42e'}}>Email Sent</Text>
+
+                    <Text style={{fontSize:15, textAlign: 'center', fontWeight: 'bold', paddingBottom: 30}}>Finish resetting your password with the link provided in email</Text>
+                    {/* Add your modal content here */}
+                    <TouchableOpacity onPress={() => {
+                        setIsModalVisible(false);
+                        navigation.navigate("SignIn");}}>
+                      <CustomButton
+                            text= "Sign In"
+                            onPress={onSignInPress}
+                            type = "TERTIARY"
+                        />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+
         </ScrollView>
+        </>
     );
 };
 

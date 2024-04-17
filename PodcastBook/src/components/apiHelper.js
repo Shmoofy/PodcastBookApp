@@ -54,7 +54,7 @@ export const searchUser = async (username, targetUser) => {
         const {data} = await client.post('/SearchUser', {"MyUser" : username, "Username": targetUser});
         return data;
     } catch (error) {
-        return catchError(error);
+        return error;
     }
 }
 
@@ -65,6 +65,18 @@ export const followUserCall = async (userId, targetUserId) => {
         const {data} = await client.post('/FollowUser', {"UserID" : userId, "targetUserID": targetUserId});
         return data;
     } catch (error) {
-        return catchError(error);
+        return error;
+    }
+}
+
+export const sendEmail = async (email) => {
+
+    try {
+        //console.log("in send email api, userId:",username);
+        const {data} = await client.post('/forgotPassword', {"Email" : email});
+        return data;
+    } catch (error) {
+        console.log(error);
+        return "error";
     }
 }

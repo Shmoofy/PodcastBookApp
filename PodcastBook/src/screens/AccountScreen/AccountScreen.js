@@ -7,6 +7,9 @@ import { getUserReviews } from "../../components/podcastsAPI";
 
 import deleteIcon from "../../../assets/images/delete-icon.png";
 import editIcon from "../../../assets/images/edit-icon.png";
+import signOutIcon from "../../../assets/images/signOut.png";
+import settingsIcon from "../../../assets/images/settingsIcon.png";
+
 import { useForm, Controller} from 'react-hook-form';
 import { getUserInfo, editReview } from "../../components/apiHelper";
 import CustomInput from "../../components/CustomInput";
@@ -26,6 +29,11 @@ const AccountScreen = ({route})=>
     const [reviews, setReviews] = useState([]);
     const [totalReviews, setTotalReviews] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+
+    const [message, setMessage] = useState({
+      text: '',
+      type:''
+     })
 
     useFocusEffect(
 
@@ -76,7 +84,8 @@ const AccountScreen = ({route})=>
     };
 
     //stuff for delete/edit review modals
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isSignOutModalVisible, setIsSignOutModalVisible] = useState(false);
+    const [isDeleteModalVis, setIsDeleteModalVis] = useState(false);
     const {control, handleSubmit, formState: {errors}} = useForm();
     
 
@@ -85,7 +94,7 @@ const AccountScreen = ({route})=>
 
     const handleDeleteReview = (review) => {
       // Logic to handle delete review action
-      setIsModalVisible(true); // Open the modal
+      setIsDeleteModalVis(true); // Open the modal
     };
 
     
@@ -93,9 +102,37 @@ const AccountScreen = ({route})=>
 
 
     return(
+        <>
+
+        {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
+
+            <View style={{ flexDirection: "row-reverse", marginBottom: 8, paddingHorizontal:10, paddingTop: 10}}>
+                <TouchableOpacity onPress={() => handleDeleteReview(review)}>
+                      <Image source={signOutIcon} style={{ width: 30, height: 30}} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleDeleteReview(review)}>
+                      <Image source={settingsIcon} style={{ width: 29, height: 29, marginRight: 10}} />
+                </TouchableOpacity>
+            </View>
+
+          <View style={{marginTop:4, marginBottom:4}}>  
+            <Text style={styles.setting}>My Reviews</Text>
+          </View>
+        <Modal animationType='slide' transparent={true} visible={isSignOutModalVisible} onRequestClose={()=> setIsSignOutModalVisible(false)}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                  <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
+                    <Text>This is a modal</Text>
+                    {/* Add your modal content here */}
+                    <TouchableOpacity onPress={() => setIsSignOutModalVisible(false)}>
+                      <Text>Close Modal</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+          </Modal>
+
         <ScrollView>
           <View style = {DetailStyle.container}>
-            <Text style={styles.setting}>My Reviews</Text>
+            
             
             {reviews.map((review) => (
               
@@ -137,12 +174,12 @@ const AccountScreen = ({route})=>
 
 
               
-              <Modal animationType='slide' transparent={true} visible={isModalVisible} onRequestClose={()=> setIsModalVisible(false)}>
+              <Modal animationType='slide' transparent={true} visible={isDeleteModalVis} onRequestClose={()=> setIsDeleteModalVis(false)}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                   <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
                     <Text>This is a modal</Text>
                     {/* Add your modal content here */}
-                    <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+                    <TouchableOpacity onPress={() => setIsDeleteModalVis(false)}>
                       <Text>Close Modal</Text>
                     </TouchableOpacity>
                   </View>
@@ -159,14 +196,14 @@ const AccountScreen = ({route})=>
 
         </View>            
         </ScrollView>
-
+        </>
     );
 };
 
 
 const styles = StyleSheet.create({
     setting: {
-        alignItems: 'center',
+        textAlign: 'center',
         fontWeight: 'bold',
         paddingLeft: 10,
         paddingTop: 10,
