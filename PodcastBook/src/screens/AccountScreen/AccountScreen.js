@@ -39,14 +39,14 @@ const AccountScreen = ({route})=>
     const getInfo = async () => {
         const userInfo = await getUserInfo(userId);
         console.log('getting user info on account screen')
-        console.log(userInfo);
+        //console.log(userInfo);
     }
 
     const fetchReviews = async () => {
 
         try {
             const data = await getUserReviews(userId); // Call your getReviews API function
-            console.log('API response:', data);
+            //console.log('API response:', data);
 
             if (data.message == "Request failed with status code 404") {
                 console.log("No reviews found in if");
@@ -60,12 +60,12 @@ const AccountScreen = ({route})=>
                 console.log("INSIDE IF");
                 setReviews(data.userReviews);
                 setTotalReviews(data.totalUserReviews);
-                console.log(reviews);
+                //console.log(reviews);
                 //console.log("TESTNIG CMT",reviews.Comment);
                 console.log(totalReviews);
               }
 
-              console.log("logging array of reviews", reviews);
+              //console.log("logging array of reviews", reviews);
 
               setIsLoading(false);
 

@@ -12,9 +12,10 @@ export const submitReview = async (values,userId, title, username) => {
         "UserID": userId,
     }
     try {
-        console.log("in api call");
-        console.log(packageData);
+        console.log("in api call submitReview");
+        //console.log(packageData);
         const {data} = await client.post('../podcast/writeReview', packageData);
+
         return data;
     } catch (error) {
         return catchError(error);
@@ -26,8 +27,8 @@ export const editReview = async (packageData) => {
 
     
     try {
-        console.log("in api call");
-        console.log(packageData);
+        console.log("in api call editReview");
+        //console.log(packageData);
         const {data} = await client.put('../podcast/editReview', packageData);
         return data;
     } catch (error) {

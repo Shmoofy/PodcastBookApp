@@ -41,18 +41,22 @@ const WriteReviewScreen = ({route}) => {
         type:''
     })
 
-    const {control, handleSubmit, formState: {errors}} = useForm();
+    const {control, handleSubmit, formState: {errors},reset} = useForm();
 
     const onSubmitReview = async(data) => {
         console.warn("submit review");
         console.log(data);
-
+        
         const userInfo = await getUserInfo(userId);
         const username = userInfo.user.Username;
         console.log(username);
 
         const res = await submitReview(data, userId, title, username);
-        
+        reset({
+            Comment:'',
+            Rating:''
+
+        });
         if(res.error) {
             updateNotification(setMessage, res.error);
         } else {
