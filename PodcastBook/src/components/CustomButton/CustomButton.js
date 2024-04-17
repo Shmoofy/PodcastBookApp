@@ -37,7 +37,10 @@ const styles = StyleSheet.create({
     container_TERTIARY: {
 
     },
-
+    container_DELETE:{
+        backgroundColor:'red'
+        
+    },
     text: {
         fontWeight: 'bold',
         color: 'white'

@@ -36,6 +36,25 @@ export const editReview = async (packageData) => {
     }
 }
 
+export const deleteReview = async (reviewId) => {
+    //const navigation = useNavigation();
+    const packageData = {
+        ReviewID: reviewId
+        
+    }
+    
+    try {
+        console.log("package",packageData);
+        console.log("in api call deleteReview");
+        console.log(reviewId,typeof(reviewId));
+        const {data} = await client.delete('../podcast/deleteReview', {data:packageData});
+        console.log("data for delete api",data);
+        return data;
+    } catch (error) {
+        return error;
+    }
+}
+
 export const getUserInfo = async (userId) => {
 
     try {

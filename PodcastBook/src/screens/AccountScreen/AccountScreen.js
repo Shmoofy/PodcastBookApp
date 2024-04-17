@@ -8,7 +8,7 @@ import { getUserReviews } from "../../components/podcastsAPI";
 import deleteIcon from "../../../assets/images/delete-icon.png";
 import editIcon from "../../../assets/images/edit-icon.png";
 import { useForm, Controller} from 'react-hook-form';
-import { getUserInfo, editReview } from "../../components/apiHelper";
+import { getUserInfo, editReview,deleteReview } from "../../components/apiHelper";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { TextInput } from 'react-native-paper';
@@ -76,7 +76,25 @@ const AccountScreen = ({route})=>
     };
 
     //stuff for delete/edit review modals
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    //const [isDeleteModalVis, setisDeleteModalVis] = useState(false);
+    const [isDeleteModalVis, setisDeleteModalVis] = useState({});
+
+    useEffect(() => {
+      // Initialize the isDeleteModalVis state object
+      const initialModalState = {};
+      reviews.forEach((review) => {
+          initialModalState[review._id] = false;
+      });
+      setisDeleteModalVis(initialModalState);
+  }, [reviews]);
+
+  const toggleDeleteModal = (reviewId) => {
+      setisDeleteModalVis(prevState => ({
+          ...prevState,
+          [reviewId]: !prevState[reviewId]
+      }));
+    };
+
     const {control, handleSubmit, formState: {errors}} = useForm();
     
 
@@ -85,10 +103,16 @@ const AccountScreen = ({route})=>
 
     const handleDeleteReview = (review) => {
       // Logic to handle delete review action
-      setIsModalVisible(true); // Open the modal
+      
+      toggleDeleteModal(review._id) ;// Open the modal
     };
 
-    
+    const ActuallyDeleteReview = async(reviewID) =>{
+        const data = await deleteReview(reviewID);
+        console.log("message:",data.message);
+        toggleDeleteModal(reviewID);
+        fetchReviews();
+    };
     
 
 
@@ -99,7 +123,7 @@ const AccountScreen = ({route})=>
             
             {reviews.map((review) => (
               
-              <>
+              <React.Fragment key = { review._id}>
               <ReviewCard key={review._id}>
                 <View style={{ position: "relative" }}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
@@ -137,20 +161,24 @@ const AccountScreen = ({route})=>
 
 
               
-              <Modal animationType='slide' transparent={true} visible={isModalVisible} onRequestClose={()=> setIsModalVisible(false)}>
+              <Modal animationType='slide' transparent={true} visible={isDeleteModalVis[review._id]} onRequestClose={()=> toggleDeleteModal(review._id)}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                   <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
-                    <Text>This is a modal</Text>
-                    {/* Add your modal content here */}
-                    <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+                    <Text>{review.Podcast}{review._id}</Text>
+                    <CustomButton 
+                      type="DELETE"
+                      text = "Delete Review"
+                      onPress={()=>ActuallyDeleteReview(review._id)}
+                    />
+                    <TouchableOpacity onPress={() => toggleDeleteModal(review._id)}>
                       <Text>Close Modal</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
               </Modal>
-              </>
+              </React.Fragment>
             
-
+              
 
             ))}
 
