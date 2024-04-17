@@ -22,7 +22,7 @@ const AccountScreen = ({route})=>
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
     const userId = route.params.userId;
-    console.log("userid settingsUID:", userId);
+    console.log("userid settings in account screen:", userId);
     const [reviews, setReviews] = useState([]);
     const [totalReviews, setTotalReviews] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
@@ -62,7 +62,7 @@ const AccountScreen = ({route})=>
                 setTotalReviews(data.totalUserReviews);
                 //console.log(reviews);
                 //console.log("TESTNIG CMT",reviews.Comment);
-                console.log(totalReviews);
+                //console.log(totalReviews);
               }
 
               //console.log("logging array of reviews", reviews);
@@ -98,6 +98,7 @@ const AccountScreen = ({route})=>
             <Text style={styles.setting}>My Reviews</Text>
             
             {reviews.map((review) => (
+              
               <>
               <ReviewCard key={review._id}>
                 <View style={{ position: "relative" }}>
@@ -148,7 +149,7 @@ const AccountScreen = ({route})=>
                 </View>
               </Modal>
               </>
-
+            
 
 
             ))}

@@ -39,8 +39,30 @@ export const editReview = async (packageData) => {
 export const getUserInfo = async (userId) => {
 
     try {
-        console.log("in getuser info api, userId:",userId);
+        //console.log("in getuser info api, userId:",userId);
         const {data} = await client.post('/getUserInfo', {"UserID" : userId});
+        return data;
+    } catch (error) {
+        return catchError(error);
+    }
+}
+
+export const searchUser = async (username, targetUser) => {
+
+    try {
+        //console.log("in search user api, userId:",username);
+        const {data} = await client.post('/SearchUser', {"MyUser" : username, "Username": targetUser});
+        return data;
+    } catch (error) {
+        return catchError(error);
+    }
+}
+
+export const followUserCall = async (userId, targetUserId) => {
+
+    try {
+        //console.log("in follow user api, userId:",username);
+        const {data} = await client.post('/FollowUser', {"UserID" : userId, "targetUserID": targetUserId});
         return data;
     } catch (error) {
         return catchError(error);
