@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     filler: {
-        paddingVertical:50
+        paddingVertical:30
     },
     text: {
         color: 'black',

@@ -173,15 +173,18 @@ const AccountScreen = ({route})=>
                 </View>
 
                 {review._id && (
-                <View style={{ flexDirection: "row", paddingLeft:275 }}>
+                <View style={{ flexDirection: "row-reverse" }}>
 
+
+                    <TouchableOpacity onPress={() => handleDeleteReview(review)}>
+                        <Image source={deleteIcon} style={{ width: 20, height: 20, justifyContent: 'flex-end'}} />
+                  </TouchableOpacity>
+                  
                   <TouchableOpacity onPress={() => navigation.navigate("Edit Review",{ReviewID : review._id, Rating: review.Rating, Comment: review.Comment})}>
                         <Image source={editIcon} style={{ width: 20, height: 20, marginRight: 8 }} />
                     </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => handleDeleteReview(review)}>
-                        <Image source={deleteIcon} style={{ width: 20, height: 20, justifyContent: 'flex-end'}} />
-                  </TouchableOpacity>
+                 
 
                 </View>
                 )}
