@@ -156,10 +156,10 @@ const AccountScreen = ({route})=>
         <ScrollView>
           <View style = {DetailStyle.container}>
             
-            
-            {reviews.map((review) => (
+        
+            {reviews && reviews.length > 0 && reviews.map((review, index) => (
               
-              <React.Fragment key = { review._id}>
+              <React.Fragment key = { index }>
               <ReviewCard key={review._id}>
                 <View style={{ position: "relative" }}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
@@ -181,17 +181,19 @@ const AccountScreen = ({route})=>
                   </Text>
                 </View>
 
+                {review._id && (
                 <View style={{ flexDirection: "row", paddingLeft:275 }}>
 
-                <TouchableOpacity onPress={() => navigation.navigate("EditReview",{ReviewID : review._id, Rating: review.Rating, Comment: review.Comment})}>
-                      <Image source={editIcon} style={{ width: 20, height: 20, marginRight: 8 }} />
+                  <TouchableOpacity onPress={() => navigation.navigate("EditReview",{ReviewID : review._id, Rating: review.Rating, Comment: review.Comment})}>
+                        <Image source={editIcon} style={{ width: 20, height: 20, marginRight: 8 }} />
+                    </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => handleDeleteReview(review)}>
+                        <Image source={deleteIcon} style={{ width: 20, height: 20, justifyContent: 'flex-end'}} />
                   </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => handleDeleteReview(review)}>
-                      <Image source={deleteIcon} style={{ width: 20, height: 20, justifyContent: 'flex-end'}} />
-                </TouchableOpacity>
-
                 </View>
+                )}
                 
               </ReviewCard>
 
@@ -221,6 +223,7 @@ const AccountScreen = ({route})=>
             
 
             ))}
+
 
             
           
