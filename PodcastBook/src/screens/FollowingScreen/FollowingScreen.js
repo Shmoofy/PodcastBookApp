@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, SafeAreaView, FlatList,StyleSheet, useWindowDimensions} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { getUserInfo, searchUser, followUserCall } from "../../components/apiHelper";
-import {getFeed } from "../../components/podcastsAPI";
+import {getFeed, getUserReviews } from "../../components/podcastsAPI";
 import ReviewCard from '../../components/ReviewCard/PodcastCard/ReviewCard';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
@@ -87,7 +87,8 @@ const FollowingScreen = ({route})=>
           console.log("User found", data[0].Username);
           const followData = await followUserCall(userId, data[0]._id);
           console.log(followData);
-          updateNotification(setMessage, "User followed");
+          console.log(followData.message);
+          updateNotification(setMessage, followData.message );
         } 
 
         } catch (error) {
@@ -96,13 +97,60 @@ const FollowingScreen = ({route})=>
           updateNotification(setMessage, "User not found", 'error');
         }
         
-          
-        
-        //call follow user api
-        
-        
-
     }
+
+    const getFriendsReview = async () => {
+      setIsLoading(true);
+      setHasSearched(true);
+  
+      if (!searchQuery.trim()){
+      //   console.error('Error: Search query cannot be empty');
+          fetchFeed();
+      //   setIsLoading(false); 
+      //   setHasSearched(false);
+        return; 
+      }
+
+      console.log("outside try catch");
+
+      try {
+
+        const res = await searchUser(userInfo.user.Username, searchQuery);
+        try {
+          if (res[0].Username === searchQuery) {
+            //no user found
+            console.log("User found", res[0].Username);
+            
+            const data = await getUserReviews(res[0]._id);
+
+            if (data.message == "Request failed with status code 404") {
+                console.log("No reviews found in if");
+                setReviews([{}]);
+                setTotalReviews(0);
+            }
+            if (data) {
+                console.log("setting reviews if user found");
+                setReviews(data.userReviews);
+                setTotalReviews(data.userReviews.length);
+          //console.log(reviews);
+          //console.log(totalReviews);
+            }
+
+            //updateNotification(setMessage, followData.message );
+          } 
+          } catch (error) {
+            console.log("User not found");
+            updateNotification(setMessage, "User not found", 'error');
+          }
+
+          setIsLoading(false);
+
+      } catch (error) {
+        console.error('Error fetching search reviews:', error);
+        setIsLoading(false);
+      }
+      
+    };
 
     return(
         <>
@@ -113,11 +161,11 @@ const FollowingScreen = ({route})=>
             <SearchFriendBar
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
-                    handleSearch={followUser}
+                    handleSearch={getFriendsReview}
+                    onIconPress={followUser}
             />
-            <Text style={{textAlign:'center', fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>Followed Users</Text>
             <View style = {{marginBottom: 20, marginTop:20}}></View>
-            <Text style={{textAlign:'center', fontSize: 20, marginBottom: 5, fontWeight: 'bold'}}>Followed Reviews</Text>
+            <Text style={{textAlign:'center', fontSize: 20, marginBottom: 5, fontWeight: 'bold'}}>Friends Reviews</Text>
 
         </View>
 

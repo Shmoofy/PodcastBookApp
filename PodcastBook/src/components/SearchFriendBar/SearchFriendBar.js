@@ -2,7 +2,7 @@ import React from 'react';
 import { Searchbar } from 'react-native-paper';
 
 
-const SearchFriendBar = ({searchQuery, setSearchQuery, handleSearch }) => {
+const SearchFriendBar = ({searchQuery, setSearchQuery, handleSearch, onIconPress }) => {
   return (
     <Searchbar
         placeholder="Follow a friend by username"
@@ -10,7 +10,7 @@ const SearchFriendBar = ({searchQuery, setSearchQuery, handleSearch }) => {
         value={searchQuery}
         onSubmitEditing={handleSearch}
         icon = "account-multiple-plus"
-        
+        onIconPress={onIconPress}
         style={{ marginHorizontal: 10, marginBottom: 10 }}
         
     />

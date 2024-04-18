@@ -130,10 +130,10 @@ const AccountScreen = ({route})=>
         {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
 
             <View style={{ flexDirection: "row-reverse", marginBottom: 8, paddingHorizontal:10, paddingTop: 10}}>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
                       <Image source={signOutIcon} style={{ width: 30, height: 30}} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
                       <Image source={settingsIcon} style={{ width: 29, height: 29, marginRight: 10}} />
                 </TouchableOpacity>
             </View>
@@ -198,23 +198,27 @@ const AccountScreen = ({route})=>
 
               
               <Modal animationType='slide' transparent={true} visible={isDeleteModalVis[review._id]} onRequestClose={()=> toggleDeleteModal(review._id)}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                  <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
-                    <Text>{review.Podcast}{review._id}</Text>
-                    <CustomButton 
-                      type="DELETE"
-                      text = "Delete Review"
-                      onPress={()=>ActuallyDeleteReview(review._id)}
-                    />
-                    <TouchableOpacity onPress={() => toggleDeleteModal(review._id)}>
-                      <Text>Close Modal</Text>
-                    </TouchableOpacity>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, .7)' }}>
+                    <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+
+                    <Text style={{fontSize:15, textAlign: 'center', fontWeight: 'bold', paddingBottom: 30}}>Are you sure you want to delete review</Text>
+
+                      <CustomButton 
+                        type="DELETE"
+                        text = "Delete Review"
+                        onPress={()=>ActuallyDeleteReview(review._id)}
+                      />
+                      <CustomButton
+                              text= "Go Back"
+                              onPress={() => toggleDeleteModal(review._id)}
+                              type = "TERTIARY"
+                          />
+                    </View>
                   </View>
-                </View>
               </Modal>
               </React.Fragment>
             
-              
+            
 
             ))}
 

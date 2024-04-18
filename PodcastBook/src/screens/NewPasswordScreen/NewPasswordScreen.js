@@ -4,46 +4,72 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from 'react-hook-form';
+import { changePassword } from "../../components/podcastsAPI";
+
+import AppNotifcation from "../AppNotification/AppNotification";
+import { updateNotification } from "../../components/helper";
 
 
 
-const NewPasswordScreen = () => {
+const NewPasswordScreen = ({route}) => {
 
-    const {control, handleSubmit} = useForm();
+    const {control, handleSubmit, formState: {errors},reset} = useForm();
+    const userId = route.params.userId;
+
 
     const navigation = useNavigation();
 
-    const onSubmitPressed = (data) => {
-        console.warn(data);
-        navigation.navigate('HomeScreen');
+    const onSubmitPressed = async(data) => {
+        console.log(data);
+        console.log(userId);
+        
+        
+        reset();
+        try {  
+            const res = await changePassword(userId, data.ConfirmPassword);
+            if (res.message != "User password updated successfully") {
+                //does not work erorr
+                updateNotification(setMessage, res.message, 'error');
+                console.log("recieved error");
+            } else {
+                updateNotification(setMessage, "Password Updated" );
+            }
+            
+        } catch (error) {
+            console.log(error);
+            updateNotification(setMessage, "Error occured", 'error');
+        }
+        //navigation.navigate('HomeScreen');
     }
 
-    const onSignInPress = () => {
+    const onBackPress = () => {
         console.warn('sign in');
-        navigation.navigate('SignIn');
+        navigation.navigate('Account');
+        reset();
     }
+
+    const [message, setMessage] = useState({
+        text: '',
+        type:''
+    })
     
 
     return (
+        <>
+        {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
         <ScrollView>
             <View style={styles.root}>
 
                 <View style={styles.filler}></View>
-                <Text style={styles.title}>Set a new password</Text>    
+                <Text style={styles.title}>Change password</Text>    
                 
 
-                <CustomInput
-                name="code"
-                placeholder="Enter verification code"
-                control= {control}
-                rules={{
-                    required: "Code is required"
-                }}
                 
-                />
+                
                 <CustomInput
-                name="password"
-                placeholder="Enter your new Password" 
+                name="ConfirmPassword"
+                placeholder="Enter your new password"
+                defaultValue={"password"}
                 control={control}
                 secureTextEntry
                 rules={{
@@ -51,7 +77,8 @@ const NewPasswordScreen = () => {
                     minLength: {
                         value: 8,
                         message: "Password must be at least 8 characters"
-                    }
+                    },
+                    pattern : {value: /^(?=.*[a-z])(?=.*[A-Z])/, message: "Password must contain at least one lowercase and uppercase letter"}
                 }}
                 />
                 
@@ -61,12 +88,13 @@ const NewPasswordScreen = () => {
                 />
             
                 <CustomButton
-                text= "Back to Sign In"
-                onPress={onSignInPress}
+                text= "Back to Account Screen"
+                onPress={onBackPress}
                 type = "TERTIARY"
                 />
             </View>
         </ScrollView>
+        </>
     );
 };
 
