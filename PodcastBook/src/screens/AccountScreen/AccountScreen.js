@@ -141,8 +141,10 @@ const AccountScreen = ({route})=>
           <View style={{marginTop:4, marginBottom:4}}>  
             <Text style={styles.setting}>My Reviews</Text>
           </View>
+      </View>
 
-        <ScrollView>
+      <SafeAreaView style={{flex:1}}>
+        <ScrollView style={DetailStyle.backGroundStyle}>
           <View style = {DetailStyle.container}>
             
         
@@ -214,13 +216,12 @@ const AccountScreen = ({route})=>
             ))}
 
 
-            
-          
-
         </View>            
-        </ScrollView>
-        </View>
-        </>
+      </ScrollView>
+    </SafeAreaView>
+
+    
+    </>
     );
 };
 
@@ -272,6 +273,7 @@ const DetailStyle = StyleSheet.create({
     container: {
       flex: 1,
       padding: 20,
+      backgroundColor:"lightblue"
     },
     commentText:{
       

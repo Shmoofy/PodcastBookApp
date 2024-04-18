@@ -79,11 +79,12 @@ const EditReviewScreen = ({route}) => {
         {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
 
         <ScrollView style={{backgroundColor:"lightblue"}}>
-            <View style={styles.root}>
+           
                 
 
                 <View style={styles.filler}></View>
                 <Text style={styles.subTitle}>Review</Text>
+                <View style={styles.root}>
                 <CustomInput
                     name="Comment"
                     placeholder="Write your Review"
@@ -93,7 +94,9 @@ const EditReviewScreen = ({route}) => {
                     multiline={true}
                     type = "BIG"
                 />
-                <Text>Rating</Text>
+                </View>
+                <Text style={styles.subTitle}>Rating</Text>
+                <View style={styles.root}>
                 <CustomInput
                     name="Rating"
                     placeholder={"Rating (1-5)"}
@@ -108,8 +111,12 @@ const EditReviewScreen = ({route}) => {
                 text="Edit Review"
                 onPress={handleSubmit(submitEdit)}
                 />
+                </View>
 
-            </View>
+                <View style={styles.root}>
+                    <Text >Liked the podcast enough to add more? </Text>
+                    <Text >maybe not ...  </Text>
+                </View>
         </ScrollView>
         
         </>
@@ -121,6 +128,7 @@ const styles = StyleSheet.create({
     root: {
         alignItems: 'center',
         padding: 40,
+        paddingVertical:10,
         
     },
     logo: {
@@ -134,10 +142,12 @@ const styles = StyleSheet.create({
         color: 'black',
         
     },
-    root_subTitle:{
-        flexDirection:"row",
-        alignItems:"flex-start",
-        textAlign:"left"
+    subTitle:{
+        
+        textAlign:"left",
+        marginHorizontal:45,
+        fontSize:20
+
     }
 });
 

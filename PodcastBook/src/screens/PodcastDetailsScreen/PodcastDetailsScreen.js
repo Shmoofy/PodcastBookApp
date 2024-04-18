@@ -95,7 +95,7 @@ const PodcastDetails = ({route}) =>
 
                   <View style={{flex:1}}>
                     <Text style={DetailStyle.boldItemsUsername}>
-                      {review.Username ? review.Username : "No reviews for this podcast"}:   
+                      {review.Username ? `${review.Username} wrote:` : "No reviews available "}  
                     </Text>
                   </View>
 

@@ -27,8 +27,8 @@ const normalizeData = (data) => {
 const HomeScreen = ({route}) => {
     console.log("in home screen");
 
-    //const API_KEY = '3011950757904ed98ce3b6f16b20f929';
-    const API_KEY = '';
+    const API_KEY = '3011950757904ed98ce3b6f16b20f929';
+    //const API_KEY = '';
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
 
