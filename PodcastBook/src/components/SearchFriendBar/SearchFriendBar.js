@@ -5,7 +5,7 @@ import { Searchbar } from 'react-native-paper';
 const SearchFriendBar = ({searchQuery, setSearchQuery, handleSearch, onIconPress }) => {
   return (
     <Searchbar
-        placeholder="Follow a friend by username"
+        placeholder="Follow/Unfollow User"
         onChangeText={setSearchQuery}
         value={searchQuery}
         onSubmitEditing={handleSearch}
