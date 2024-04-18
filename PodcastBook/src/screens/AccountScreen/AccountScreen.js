@@ -130,10 +130,10 @@ const AccountScreen = ({route})=>
         {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
 
             <View style={{ flexDirection: "row-reverse", marginBottom: 8, paddingHorizontal:10, paddingTop: 10}}>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
                       <Image source={signOutIcon} style={{ width: 30, height: 30}} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
                       <Image source={settingsIcon} style={{ width: 29, height: 29, marginRight: 10}} />
                 </TouchableOpacity>
             </View>
@@ -141,25 +141,14 @@ const AccountScreen = ({route})=>
           <View style={{marginTop:4, marginBottom:4}}>  
             <Text style={styles.setting}>My Reviews</Text>
           </View>
-        <Modal animationType='slide' transparent={true} visible={isSignOutModalVisible} onRequestClose={()=> setIsSignOutModalVisible(false)}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                  <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
-                    <Text>This is a modal</Text>
-                    {/* Add your modal content here */}
-                    <TouchableOpacity onPress={() => setIsSignOutModalVisible(false)}>
-                      <Text>Close Modal</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-          </Modal>
 
         <ScrollView>
           <View style = {DetailStyle.container}>
             
-            
-            {reviews.map((review) => (
+        
+            {reviews && reviews.length > 0 && reviews.map((review, index) => (
               
-              <React.Fragment key = { review._id}>
+              <React.Fragment key = { index }>
               <ReviewCard key={review._id}>
                 <View style={{ position: "relative" }}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
@@ -181,42 +170,49 @@ const AccountScreen = ({route})=>
                   </Text>
                 </View>
 
+                {review._id && (
                 <View style={{ flexDirection: "row", paddingLeft:275 }}>
 
-                <TouchableOpacity onPress={() => navigation.navigate("EditReview",{ReviewID : review._id, Rating: review.Rating, Comment: review.Comment})}>
-                      <Image source={editIcon} style={{ width: 20, height: 20, marginRight: 8 }} />
+                  <TouchableOpacity onPress={() => navigation.navigate("EditReview",{ReviewID : review._id, Rating: review.Rating, Comment: review.Comment})}>
+                        <Image source={editIcon} style={{ width: 20, height: 20, marginRight: 8 }} />
+                    </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => handleDeleteReview(review)}>
+                        <Image source={deleteIcon} style={{ width: 20, height: 20, justifyContent: 'flex-end'}} />
                   </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => handleDeleteReview(review)}>
-                      <Image source={deleteIcon} style={{ width: 20, height: 20, justifyContent: 'flex-end'}} />
-                </TouchableOpacity>
-
                 </View>
+                )}
                 
               </ReviewCard>
 
 
               
               <Modal animationType='slide' transparent={true} visible={isDeleteModalVis[review._id]} onRequestClose={()=> toggleDeleteModal(review._id)}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                  <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
-                    <Text>{review.Podcast}{review._id}</Text>
-                    <CustomButton 
-                      type="DELETE"
-                      text = "Delete Review"
-                      onPress={()=>ActuallyDeleteReview(review._id)}
-                    />
-                    <TouchableOpacity onPress={() => toggleDeleteModal(review._id)}>
-                      <Text>Close Modal</Text>
-                    </TouchableOpacity>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, .7)' }}>
+                    <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+
+                    <Text style={{fontSize:15, textAlign: 'center', fontWeight: 'bold', paddingBottom: 30}}>Are you sure you want to delete review</Text>
+
+                      <CustomButton 
+                        type="DELETE"
+                        text = "Delete Review"
+                        onPress={()=>ActuallyDeleteReview(review._id)}
+                      />
+                      <CustomButton
+                              text= "Go Back"
+                              onPress={() => toggleDeleteModal(review._id)}
+                              type = "TERTIARY"
+                          />
+                    </View>
                   </View>
-                </View>
               </Modal>
               </React.Fragment>
             
-              
+            
 
             ))}
+
 
             
           
@@ -235,6 +231,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingTop: 10,
         fontSize: 30, 
+        fontFamily: 'RobotoMono-Bold',
     },
 
     

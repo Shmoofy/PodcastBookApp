@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { View, Text, Image, StyleSheet, useWindowDimensions, ScrollView, TextInput} from "react-native";
 import Logo from '../../../assets/images/penguinPodcastLogo.png';
 import CustomInput from '../../components/CustomInput';
@@ -6,38 +6,51 @@ import CustomButton from "../../components/CustomButton";
 
 import { useNavigation } from "@react-navigation/native";
 
-import { useForm, Controller} from 'react-hook-form';
+import { useForm, Controller, reset} from 'react-hook-form';
 import client from "../../components/client";
 import { signin } from "../../components/auth";
 import AppNotifcation from "../AppNotification/AppNotification";
 import { updateNotification } from "../../components/helper";
 
 
-const SignInScreen = () => {
+const SignInScreen = ({route}) => {
 
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
+    
 
     const [message, setMessage] = useState({
         text: '',
         type:''
     })
 
-    const {control, handleSubmit, formState: {errors}} = useForm();
+   
+
+    const {control, handleSubmit, formState: {errors}, reset} = useForm();
+    
 
     const onSignInPressed = async(data) => {
         console.warn("sign in");
         console.log(data);
-
+        
         const res = await signin(data);
+        
         
         if(res.error) {
             updateNotification(setMessage, res.error, 'error');
         } else {
             console.log("user signed in successfully");
             console.log(res);
+
+            
             navigation.navigate('MenuScreen', {userId: res.UserID});
+            reset();
+            return;
+            
         }
+
+        
+        
         
     }
 
@@ -64,6 +77,7 @@ const SignInScreen = () => {
                 name="Username"
                 placeholder="Username" 
                 control={control}
+                defaultValue={""}
                 rules= {
                     {required: 'Username is required'}
                 }
@@ -71,11 +85,11 @@ const SignInScreen = () => {
                 <CustomInput 
                 name="Password"
                 placeholder="Password"
+                defaultValue={""}
                 control={control}
                 secureTextEntry
                 rules= {{
                     required: 'Password is required',
-                    minLength: {value: 8, message: 'Password must be minimum 8 characters'}
                 }}
                 />
                 

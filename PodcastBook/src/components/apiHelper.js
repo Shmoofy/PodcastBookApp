@@ -81,7 +81,7 @@ export const followUserCall = async (userId, targetUserId) => {
 
     try {
         //console.log("in follow user api, userId:",username);
-        const {data} = await client.post('/FollowUser', {"UserID" : userId, "targetUserID": targetUserId});
+        const {data} = await client.post('/followUnfollowToggle', {"UserID" : userId, "targetUserID": targetUserId});
         return data;
     } catch (error) {
         return error;

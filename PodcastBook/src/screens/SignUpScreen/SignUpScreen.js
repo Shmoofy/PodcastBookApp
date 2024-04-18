@@ -86,11 +86,12 @@ const SignUpScreen = () => {
                 control={control}
                 placeholder="Password"
                 rules={{
-                    required: "Password is required",
+                    required: "New Password is required",
                     minLength: {
                         value: 8,
                         message: "Password must be at least 8 characters"
-                    }
+                    },
+                    pattern : {value: /^(?=.*[a-z])(?=.*[A-Z])/, message: "Password must contain at least one lowercase and uppercase letter"}
                 }}
                 secureTextEntry
                 />
