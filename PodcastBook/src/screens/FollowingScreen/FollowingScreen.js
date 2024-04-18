@@ -27,6 +27,9 @@ const FollowingScreen = ({route})=>
     const [hasSearched, setHasSearched] = useState(false);
     const [userInfo, setUserInfo] = useState({});
 
+    const [searchTitle, setSearchTitle] = useState('');
+
+
     const [message, setMessage] = useState({
       text: '',
       type:''
@@ -46,10 +49,12 @@ const FollowingScreen = ({route})=>
     }
 
     const fetchFeed = async () => {
+        setSearchTitle('Friends Reviews');
+      
         try {
             const data = await getFeed(userId);
             //console.log('API response:', data);
-
+            
             if (data.message == "Request failed with status code 404") {
                 console.log("No reviews found in if");
                 setReviews([{}]);
@@ -111,37 +116,50 @@ const FollowingScreen = ({route})=>
         return; 
       }
 
-      console.log("outside try catch");
+      
 
       try {
-
+        console.log("inside first try catch");
         const res = await searchUser(userInfo.user.Username, searchQuery);
-        try {
+        
+
           if (res[0].Username === searchQuery) {
             //no user found
+            //check if there is review in that user name
+            //get user info
             console.log("User found", res[0].Username);
             
             const data = await getUserReviews(res[0]._id);
 
-            if (data.message == "Request failed with status code 404") {
-                console.log("No reviews found in if");
-                setReviews([{}]);
-                setTotalReviews(0);
-            }
-            if (data) {
-                console.log("setting reviews if user found");
-                setReviews(data.userReviews);
-                setTotalReviews(data.userReviews.length);
-          //console.log(reviews);
-          //console.log(totalReviews);
+            if (data.totalUserReviews > 0) {
+                  if (data.message == "Request failed with status code 404") {
+                    console.log("No reviews found in if");
+                    setSearchTitle('Friends Reviews');
+                    setReviews([{}]);
+                    setTotalReviews(0);
+                }
+                if (data) {
+                    console.log("setting reviews if user found");
+                    setSearchTitle(`${searchQuery}'s Reviews`);
+                    setReviews(data.userReviews);
+                    setTotalReviews(data.userReviews.length);
+              //console.log(reviews);
+              //console.log(totalReviews);
+                }
+            } else {
+              updateNotification(setMessage, "No reviews found for this user", 'error');
+              fetchFeed();
+              return;
             }
 
+            
+
             //updateNotification(setMessage, followData.message );
-          } 
-          } catch (error) {
-            console.log("User not found");
+          } else {
             updateNotification(setMessage, "User not found", 'error');
+
           }
+          
 
           setIsLoading(false);
 
@@ -151,6 +169,8 @@ const FollowingScreen = ({route})=>
       }
       
     };
+
+    
 
     return(
         <>
@@ -165,7 +185,7 @@ const FollowingScreen = ({route})=>
                     onIconPress={followUser}
             />
             <View style = {{marginBottom: 20, marginTop:20}}></View>
-            <Text style={{textAlign:'center', fontSize: 20, marginBottom: 5, fontWeight: 'bold'}}>Friends Reviews</Text>
+            <Text style={{textAlign:'center', fontSize: 20, marginBottom: 5, fontWeight: 'bold'}}>{searchTitle}</Text>
 
         </View>
 
