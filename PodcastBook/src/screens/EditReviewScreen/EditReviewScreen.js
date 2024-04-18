@@ -78,38 +78,45 @@ const EditReviewScreen = ({route}) => {
         <>
         {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
 
-        <ScrollView>
-            <View style={styles.root}>
+        <ScrollView style={{backgroundColor:"lightblue"}}>
+           
                 
 
-            <View style={styles.filler}></View>
+                <View style={styles.filler}></View>
+                <Text style={styles.subTitle}>Review</Text>
+                <View style={styles.root}>
+                <CustomInput
+                    name="Comment"
+                    placeholder="Write your Review"
+                    defaultValue={reviewComment}
+                    control={control}
+                    rules={{required: 'Review is required'}}
+                    multiline={true}
+                    type = "BIG"
+                />
+                </View>
+                <Text style={styles.subTitle}>Rating</Text>
+                <View style={styles.root}>
+                <CustomInput
+                    name="Rating"
+                    placeholder={"Rating (1-5)"}
+                    defaultValue={reviewRating.toString()}
+                    control={control}
+                    rules={{required: 'Rating is required',
+                            pattern: {value: NUM_REGEX, message: 'Rating must be between 1 and 5'}
+                            }}
+                />
 
-            <CustomInput
-                name="Comment"
-                placeholder="Write your Review"
-                defaultValue={reviewComment}
-                control={control}
-                rules={{required: 'Review is required'}}
-                multiline={true}
-                type = "BIG"
-            />
+                <CustomButton
+                text="Edit Review"
+                onPress={handleSubmit(submitEdit)}
+                />
+                </View>
 
-            <CustomInput
-                name="Rating"
-                placeholder={"Rating (1-5)"}
-                defaultValue={reviewRating.toString()}
-                control={control}
-                rules={{required: 'Rating is required',
-                        pattern: {value: NUM_REGEX, message: 'Rating must be between 1 and 5'}
-                        }}
-            />
-
-            <CustomButton
-            text="Edit Review"
-            onPress={handleSubmit(submitEdit)}
-            />
-
-            </View>
+                <View style={styles.root}>
+                    <Text >Liked the podcast enough to add more? </Text>
+                    <Text >maybe not ...  </Text>
+                </View>
         </ScrollView>
         
         </>
@@ -121,7 +128,8 @@ const styles = StyleSheet.create({
     root: {
         alignItems: 'center',
         padding: 40,
-
+        paddingVertical:10,
+        
     },
     logo: {
         maxWidth:300,
@@ -133,6 +141,13 @@ const styles = StyleSheet.create({
     text: {
         color: 'black',
         
+    },
+    subTitle:{
+        
+        textAlign:"left",
+        marginHorizontal:45,
+        fontSize:20
+
     }
 });
 

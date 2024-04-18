@@ -178,8 +178,10 @@ const FollowingScreen = ({route})=>
         <>
         
         {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
+      
 
-        <View style={{marginTop:height*.025, marginBottom:height*.018}}>
+        <SafeAreaView style={{flex:1,backgroundColor:"lightblue"}}>
+        <View style={{marginTop:height*.025, marginBottom:height*.018,backgroundColor:"ligthblue"}}>
             <SearchFriendBar
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
@@ -187,11 +189,11 @@ const FollowingScreen = ({route})=>
                     onIconPress={followUser}
             />
             <View style = {{marginBottom: 20, marginTop:20}}></View>
-            <Text style={{textAlign:'center', fontSize: 20, marginBottom: 5, fontWeight: 'bold'}}>{searchTitle}</Text>
+            <Text style={{textAlign:'center', fontSize: 20, marginBottom: 5, fontWeight: 'bold', color:"#333"}}>{searchTitle}</Text>
 
         </View>
-
-        <ScrollView>
+      
+        <ScrollView style={DetailStyle.root}>
           <View style = {DetailStyle.container}>
         
             {reviews.map((review) => (
@@ -232,6 +234,8 @@ const FollowingScreen = ({route})=>
 
         </View>            
         </ScrollView>
+        </SafeAreaView>
+        
         </>
     );
 };
@@ -251,6 +255,9 @@ const styles = StyleSheet.create({
 });
 
 const DetailStyle = StyleSheet.create({
+    root:{
+      backgroundColor:"lightblue"
+    },
     titleText: {
       fontSize: 18,
       fontWeight: 'bold',

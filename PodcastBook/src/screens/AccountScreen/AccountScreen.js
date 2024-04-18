@@ -128,7 +128,7 @@ const AccountScreen = ({route})=>
         <>
 
         {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
-
+      <View style={DetailStyle.backGroundStyle}>
             <View style={{ flexDirection: "row-reverse", marginBottom: 8, paddingHorizontal:10, paddingTop: 10}}>
                 <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
                       <Image source={signOutIcon} style={{ width: 30, height: 30}} />
@@ -141,8 +141,10 @@ const AccountScreen = ({route})=>
           <View style={{marginTop:4, marginBottom:4}}>  
             <Text style={styles.setting}>My Reviews</Text>
           </View>
+      </View>
 
-        <ScrollView>
+      <SafeAreaView style={{flex:1}}>
+        <ScrollView style={DetailStyle.backGroundStyle}>
           <View style = {DetailStyle.container}>
             
         
@@ -173,7 +175,7 @@ const AccountScreen = ({route})=>
                 {review._id && (
                 <View style={{ flexDirection: "row", paddingLeft:275 }}>
 
-                  <TouchableOpacity onPress={() => navigation.navigate("EditReview",{ReviewID : review._id, Rating: review.Rating, Comment: review.Comment})}>
+                  <TouchableOpacity onPress={() => navigation.navigate("Edit Review",{ReviewID : review._id, Rating: review.Rating, Comment: review.Comment})}>
                         <Image source={editIcon} style={{ width: 20, height: 20, marginRight: 8 }} />
                     </TouchableOpacity>
 
@@ -214,12 +216,12 @@ const AccountScreen = ({route})=>
             ))}
 
 
-            
-          
-
         </View>            
-        </ScrollView>
-        </>
+      </ScrollView>
+    </SafeAreaView>
+
+    
+    </>
     );
 };
 
@@ -231,7 +233,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingTop: 10,
         fontSize: 30, 
-        fontFamily: 'RobotoMono-Bold',
+        
     },
 
     
@@ -250,6 +252,9 @@ const styles = StyleSheet.create({
 });
 
 const DetailStyle = StyleSheet.create({
+    backGroundStyle:{
+      backgroundColor:"lightblue"
+    },
     titleText: {
       fontSize: 18,
       fontWeight: 'bold',
@@ -268,6 +273,7 @@ const DetailStyle = StyleSheet.create({
     container: {
       flex: 1,
       padding: 20,
+      backgroundColor:"lightblue"
     },
     commentText:{
       

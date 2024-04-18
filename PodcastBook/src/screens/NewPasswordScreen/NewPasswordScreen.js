@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     filler: {
-        paddingVertical:20
+        paddingVertical:90
     },
     text: {
         color: 'black',

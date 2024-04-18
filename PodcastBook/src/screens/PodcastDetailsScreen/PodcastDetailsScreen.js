@@ -74,12 +74,12 @@ const PodcastDetails = ({route}) =>
     );
 
     const writeReview = () => {
-        navigation.navigate('WriteReview', {userId: userId, title: title, refresh:refresh});
+        navigation.navigate('Write Review', {userId: userId, title: title, refresh:refresh});
         
     }
 
     return (
-      <ScrollView>
+      <ScrollView style = {DetailStyle.root}>
         <View style = {DetailStyle.container}>
             <Image source={{uri: image}} style={[DetailStyle.logo, {height:height*.3}]} resizeMode="contain"/>
             <Text style ={DetailStyle.titleText}>{title}</Text>
@@ -95,7 +95,7 @@ const PodcastDetails = ({route}) =>
 
                   <View style={{flex:1}}>
                     <Text style={DetailStyle.boldItemsUsername}>
-                      {review.Username ? review.Username : "No reviews for this podcast"}:   
+                      {review.Username ? `${review.Username} wrote:` : "No reviews available "}  
                     </Text>
                   </View>
 
@@ -129,10 +129,16 @@ const PodcastDetails = ({route}) =>
 }
 
 const DetailStyle = StyleSheet.create({
+    root: {
+          
+      backgroundColor: 'lightblue',
+
+  },
     titleText: {
       fontSize: 18,
       fontWeight: 'bold',
       color: '#333',
+      textAlign:"center"
     },
     logo:{
         maxWidth:600,
@@ -143,6 +149,8 @@ const DetailStyle = StyleSheet.create({
     paragraph: {
       marginVertical: 8,
       lineHeight: 20,
+      textAlign:"auto"
+
     },
     container: {
       flex: 1,

@@ -28,6 +28,7 @@ const HomeScreen = ({route}) => {
     console.log("in home screen");
 
     const API_KEY = '3011950757904ed98ce3b6f16b20f929';
+    //const API_KEY = '';
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
 
@@ -136,7 +137,7 @@ const HomeScreen = ({route}) => {
                 
                 return(
                     
-                    <TouchableOpacity onPress={() =>{navigation.navigate('PodcastDetails', {...item,userId:userId})}} >
+                    <TouchableOpacity onPress={() =>{navigation.navigate('Podcast Details', {...item,userId:userId})}} >
                         <PodcastCard image=
                             {<Image 
                                 source={{ uri: item.image }} 
@@ -160,7 +161,7 @@ const HomeScreen = ({route}) => {
 const styles = StyleSheet.create({
     root: {
         
-        backgroundColor: '#41a0ff',
+        backgroundColor: 'lightblue',
 
     },
     podcastLogo:{
