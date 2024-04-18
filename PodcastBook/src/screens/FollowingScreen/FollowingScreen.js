@@ -94,6 +94,7 @@ const FollowingScreen = ({route})=>
           console.log(followData);
           console.log(followData.message);
           updateNotification(setMessage, followData.message );
+          fetchFeed();
         } 
 
         } catch (error) {
