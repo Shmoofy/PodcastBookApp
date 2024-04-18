@@ -178,7 +178,9 @@ const FollowingScreen = ({route})=>
         <>
         
         {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
+      <View style={DetailStyle.root}>
 
+      
         <View style={{marginTop:height*.025, marginBottom:height*.018}}>
             <SearchFriendBar
                     searchQuery={searchQuery}
@@ -187,7 +189,7 @@ const FollowingScreen = ({route})=>
                     onIconPress={followUser}
             />
             <View style = {{marginBottom: 20, marginTop:20}}></View>
-            <Text style={{textAlign:'center', fontSize: 20, marginBottom: 5, fontWeight: 'bold'}}>{searchTitle}</Text>
+            <Text style={{textAlign:'center', fontSize: 20, marginBottom: 5, fontWeight: 'bold', color:"#333"}}>{searchTitle}</Text>
 
         </View>
 
@@ -232,6 +234,7 @@ const FollowingScreen = ({route})=>
 
         </View>            
         </ScrollView>
+        </View>
         </>
     );
 };
@@ -251,6 +254,9 @@ const styles = StyleSheet.create({
 });
 
 const DetailStyle = StyleSheet.create({
+    root:{
+      backgroundColor:"lightblue"
+    },
     titleText: {
       fontSize: 18,
       fontWeight: 'bold',

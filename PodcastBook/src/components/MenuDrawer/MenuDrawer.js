@@ -20,7 +20,7 @@ const CustomDrawerContent = ({ navigation, state}) => {
     <DrawerContentScrollView>
       {state.routes.map((route)=> {
         // Check if the route name is not the same as the current screen name
-        if (route.name !== currentRouteName && route.name !== 'PodcastDetails' && route.name !== 'WriteReview' && route.name !== 'EditReview' && route.name !== 'Settings') {
+        if (route.name !== currentRouteName && route.name !== 'Podcast Details' && route.name !== 'Write Review' && route.name !== 'Edit Review' && route.name !== 'Settings') {
           return (
             <DrawerItem
               key={route.key}
@@ -47,12 +47,12 @@ const MenuDrawer = ({route}) => {
   const userId = route.params?.userId;
   return (
     <Drawer.Navigator drawerContent={({ navigation, state}) => <CustomDrawerContent navigation={navigation} state={state}  />}>
-        <Drawer.Screen name="Home" component={HomeScreen} initialParams={{userId:userId}}/>
-        <Drawer.Screen name="Following" component={FollowingScreen} initialParams={{userId:userId}}/>
+        <Drawer.Screen name="Explore" component={HomeScreen} initialParams={{userId:userId}}/>
+        <Drawer.Screen name="Friends" component={FollowingScreen} initialParams={{userId:userId}}/>
         <Drawer.Screen name="Account" component={AccountScreen} initialParams={{userId:userId}}/>
-        <Drawer.Screen name="PodcastDetails" component={PodcastDetails} initialParams={{userId:userId}}/>
-        <Drawer.Screen name="WriteReview" component={WriteReviewScreen} initialParams={{userId:userId}}/>
-        <Drawer.Screen name="EditReview" component={EditReviewScreen} initialParams={{userId:userId}}/>
+        <Drawer.Screen name="Podcast Details" component={PodcastDetails} initialParams={{userId:userId}}/>
+        <Drawer.Screen name="Write Review" component={WriteReviewScreen} initialParams={{userId:userId}}/>
+        <Drawer.Screen name="Edit Review" component={EditReviewScreen} initialParams={{userId:userId}}/>
         <Drawer.Screen name="Settings" component={NewPasswordScreen} initialParams={{userId:userId}} />
 
     </Drawer.Navigator>

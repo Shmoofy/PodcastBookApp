@@ -78,36 +78,36 @@ const EditReviewScreen = ({route}) => {
         <>
         {message.text ? (<AppNotifcation type={message.type} text={message.text}/>): null}
 
-        <ScrollView>
+        <ScrollView style={{backgroundColor:"lightblue"}}>
             <View style={styles.root}>
                 
 
-            <View style={styles.filler}></View>
+                <View style={styles.filler}></View>
+                <Text style={styles.subTitle}>Review</Text>
+                <CustomInput
+                    name="Comment"
+                    placeholder="Write your Review"
+                    defaultValue={reviewComment}
+                    control={control}
+                    rules={{required: 'Review is required'}}
+                    multiline={true}
+                    type = "BIG"
+                />
+                <Text>Rating</Text>
+                <CustomInput
+                    name="Rating"
+                    placeholder={"Rating (1-5)"}
+                    defaultValue={reviewRating.toString()}
+                    control={control}
+                    rules={{required: 'Rating is required',
+                            pattern: {value: NUM_REGEX, message: 'Rating must be between 1 and 5'}
+                            }}
+                />
 
-            <CustomInput
-                name="Comment"
-                placeholder="Write your Review"
-                defaultValue={reviewComment}
-                control={control}
-                rules={{required: 'Review is required'}}
-                multiline={true}
-                type = "BIG"
-            />
-
-            <CustomInput
-                name="Rating"
-                placeholder={"Rating (1-5)"}
-                defaultValue={reviewRating.toString()}
-                control={control}
-                rules={{required: 'Rating is required',
-                        pattern: {value: NUM_REGEX, message: 'Rating must be between 1 and 5'}
-                        }}
-            />
-
-            <CustomButton
-            text="Edit Review"
-            onPress={handleSubmit(submitEdit)}
-            />
+                <CustomButton
+                text="Edit Review"
+                onPress={handleSubmit(submitEdit)}
+                />
 
             </View>
         </ScrollView>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     root: {
         alignItems: 'center',
         padding: 40,
-
+        
     },
     logo: {
         maxWidth:300,
@@ -133,6 +133,11 @@ const styles = StyleSheet.create({
     text: {
         color: 'black',
         
+    },
+    root_subTitle:{
+        flexDirection:"row",
+        alignItems:"flex-start",
+        textAlign:"left"
     }
 });
 
