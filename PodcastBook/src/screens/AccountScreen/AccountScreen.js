@@ -141,17 +141,6 @@ const AccountScreen = ({route})=>
           <View style={{marginTop:4, marginBottom:4}}>  
             <Text style={styles.setting}>My Reviews</Text>
           </View>
-        <Modal animationType='slide' transparent={true} visible={isSignOutModalVisible} onRequestClose={()=> setIsSignOutModalVisible(false)}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                  <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
-                    <Text>This is a modal</Text>
-                    {/* Add your modal content here */}
-                    <TouchableOpacity onPress={() => setIsSignOutModalVisible(false)}>
-                      <Text>Close Modal</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-          </Modal>
 
         <ScrollView>
           <View style = {DetailStyle.container}>
@@ -242,6 +231,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingTop: 10,
         fontSize: 30, 
+        fontFamily: 'RobotoMono-Bold',
     },
 
     

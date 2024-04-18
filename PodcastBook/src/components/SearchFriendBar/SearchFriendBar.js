@@ -1,5 +1,7 @@
 import React from 'react';
 import { Searchbar } from 'react-native-paper';
+import plusminusLogo from "../../../assets/images/acctplusandminus.png";
+
 
 
 const SearchFriendBar = ({searchQuery, setSearchQuery, handleSearch, onIconPress }) => {
@@ -9,7 +11,7 @@ const SearchFriendBar = ({searchQuery, setSearchQuery, handleSearch, onIconPress
         onChangeText={setSearchQuery}
         value={searchQuery}
         onSubmitEditing={handleSearch}
-        icon = "account-multiple-plus"
+        icon = {plusminusLogo}
         onIconPress={onIconPress}
         style={{ marginHorizontal: 10, marginBottom: 10 }}
         
