@@ -50,7 +50,7 @@ const FollowingScreen = ({route})=>
 
     const fetchFeed = async () => {
         setSearchTitle('Friends Reviews');
-      
+
         try {
             const data = await getFeed(userId);
             //console.log('API response:', data);
@@ -164,7 +164,8 @@ const FollowingScreen = ({route})=>
           setIsLoading(false);
 
       } catch (error) {
-        console.error('Error fetching search reviews:', error);
+        //console.error('Error fetching search reviews:', error);
+        updateNotification(setMessage, "User not found", 'error');
         setIsLoading(false);
       }
       
